@@ -6,7 +6,7 @@ namespace Game.Resources;
 
 public partial class Gesture : Resource {
     [Export]
-    private string GestureName;
+    public string Name;
 
     public Point[] Points = null;
     public Point[] PointsInt = null;

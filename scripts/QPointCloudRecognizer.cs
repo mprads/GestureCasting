@@ -22,17 +22,17 @@ using Godot;
 namespace Game;
 
 public partial class QPointCloudRecognizer : Node {
-    const string gestureLibraryPath = "res://gesture_library";
+    const string gestureLibraryPath = "res://resources/gesture_library";
 
     [Signal]
     public delegate void GestureClassifiedEventHandler(string gestureName);
 
     [Export]
-    private bool earlyAbandoning = true;
+    private bool UseEarlyAbandoning = true;
     [Export]
-    private bool lowerBounding = true;
+    private bool UseLowerBounding = true;
 
-    private List<Gesture> gestureSet = new();
+    private List<Gesture> GestureSet = new();
 
     public void Init() {
         var dir = DirAccess.Open(gestureLibraryPath);
@@ -43,38 +43,59 @@ public partial class QPointCloudRecognizer : Node {
             while (fileName != "") {
                 string resourceName = gestureLibraryPath + fileName.ToString();
                 Resource gestureResource = ResourceLoader.Load(resourceName);
-                gestureSet.Add((Gesture)gestureResource);
+                GestureSet.Add((Gesture)gestureResource);
                 fileName = dir.GetNext();
             }
         }
     }
 
     public string Classify(Gesture candidate) {
-        float minDistance = float.PositiveInfinity;
-        string gestureClass = "";
-        foreach (Gesture template in gestureSet) {
-            float distance;
-        }
-
-        return gestureClass;
+        float minDistance = float.MaxValue;
+            string gestureClass = "";
+            foreach (Gesture template in GestureSet)
+            {
+                float dist = GreedyCloudMatch(candidate, template, minDistance);
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    gestureClass = template.Name;
+                }
+            }
+            return gestureClass;
     }
 
     private float GreedyCloudMatch(Gesture gesture1, Gesture gesture2, float minSoFar) {
         int n = gesture1.PointsInt.Count();
         float eps = 0.5f;
+        int step = (int)Math.Floor(Math.Pow(n, 1.0f - eps));
+
+
+        if (UseLowerBounding) {
+            float[] LB1 = ComputeLowerBound(gesture1.Points, gesture2.Points, gesture2.LUT, step);
+            float[] LB2 = ComputeLowerBound(gesture2.Points, gesture1.Points, gesture1.LUT, step);
+            for (int i = 0, indexLB = 0; i < n; i += step, indexLB++) {
+                if (LB1[indexLB] < minSoFar) minSoFar = Math.Min(minSoFar, CloudDistance(gesture1.Points, gesture2.Points, i, minSoFar));
+                if (LB2[indexLB] < minSoFar) minSoFar = Math.Min(minSoFar, CloudDistance(gesture2.Points, gesture1.Points, i, minSoFar));
+            }
+        } else {
+            for (int i = 0; i < n; i += step) {
+                minSoFar = Math.Min(minSoFar, CloudDistance(gesture1.Points, gesture2.Points, i, minSoFar));
+                minSoFar = Math.Min(minSoFar, CloudDistance(gesture2.Points, gesture1.Points, i, minSoFar));
+            }   
+        }
 
         return minSoFar;
     }
 
-    private float[] ComputeLowerBound(Gesture gesture1, Gesture gesture2, int[][] LUT, int step) {
-        int n = gesture1.Points.Count();
+    private float[] ComputeLowerBound(Point[] points1, Point[] points2, int[][] LUT, int step) {
+        int n = points1.Count();
         float[] LB = new float[n / step + 1];
         float[] SAT = new float[n];
 
         LB[0] = 0;
         for (int i = 0; i < n; i++) {
-            int index = LUT[gesture1.Points[i].intY / Gesture.LUT_SCALE_FACTOR][gesture1.Points[i].intX / Gesture.LUT_SCALE_FACTOR];
-            float dist = SqrEuclideanDistance(gesture1.Points[i], gesture2.Points[index]);
+            int index = LUT[points1[i].intY / Gesture.LUT_SCALE_FACTOR][points1[i].intX / Gesture.LUT_SCALE_FACTOR];
+            float dist = SqrEuclideanDistance(points1[i], points2[index]);
             SAT[i] = (i == 0) ? dist : SAT[i - 1] + dist;
             LB[0] += (n - i) * dist;
         }
@@ -83,6 +104,42 @@ public partial class QPointCloudRecognizer : Node {
             LB[indexLB] = LB[0] + i * SAT[n - 1] - n * SAT[i - 1];
         return LB;
     }
+
+     private float CloudDistance(Point[] points1, Point[] points2, int startIndex, float minSoFar) {
+        int n = points1.Length;                
+        int[] indexesNotMatched = new int[n];
+        for (int j = 0; j < n; j++) {
+             indexesNotMatched[j] = j;
+        }
+
+        float sum = 0;                
+        int i = startIndex;           
+        int weight = n;              
+        int indexNotMatched = 0;      
+        do {
+            int index = -1;
+            float minDistance = float.MaxValue;
+            for (int j = indexNotMatched; j < n; j++) {
+                float dist = SqrEuclideanDistance(points1[i], points2[indexesNotMatched[j]]);  
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    index = j;
+                }
+            }
+            indexesNotMatched[index] = indexesNotMatched[indexNotMatched];  
+            sum += (weight--) * minDistance;
+            if (UseEarlyAbandoning) {
+                if (sum >= minSoFar) 
+                    return sum; 
+            }
+
+            i = (i + 1) % n;
+            indexNotMatched++;
+        } while (i != startIndex);
+
+        return sum;
+        }
 
     private float SqrEuclideanDistance(Point a, Point b) {
         return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
