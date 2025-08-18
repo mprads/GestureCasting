@@ -1,6 +1,3 @@
-using Godot;
-using System;
-
 namespace Game;
 
 public class Point {
@@ -15,4 +12,9 @@ public class Point {
         this.intX = 0;
         this.intY = 0;
     }
+
+    public override string ToString() {
+        return $"X: {this.X}, Y: {this.Y}, ID: {this.StrokeID}";
+    }
+
 }

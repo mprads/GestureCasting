@@ -1,8 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://jtyp3y8ur2j2"]
 
-[ext_resource type="Script" uid="uid://of2qp305fkw4" path="res://scripts/QPointCloudRecognizer.cs" id="1_o5qli"]
+[ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/gesture_input.tscn" id="2_0wfyh"]
 
 [node name="Main" type="Node3D"]
 
-[node name="GestureRecongnizer" type="Node" parent="."]
-script = ExtResource("1_o5qli")
+[node name="GestureInput" parent="." instance=ExtResource("2_0wfyh")]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://vn8tnwfdq12k"]
+
+[ext_resource type="Script" uid="uid://dtiwcbyh4243l" path="res://scenes/GestureInput.cs" id="1_vprag"]
+
+[node name="GestureInput" type="Node2D"]
+script = ExtResource("1_vprag")

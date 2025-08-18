@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Game.Resources;
 using Godot;
 
@@ -52,11 +51,9 @@ public partial class QPointCloudRecognizer : Node {
     public string Classify(Gesture candidate) {
         float minDistance = float.MaxValue;
             string gestureClass = "";
-            foreach (Gesture template in GestureSet)
-            {
+            foreach (Gesture template in GestureSet) {
                 float dist = GreedyCloudMatch(candidate, template, minDistance);
-                if (dist < minDistance)
-                {
+                if (dist < minDistance) {
                     minDistance = dist;
                     gestureClass = template.Name;
                 }
@@ -65,7 +62,7 @@ public partial class QPointCloudRecognizer : Node {
     }
 
     private float GreedyCloudMatch(Gesture gesture1, Gesture gesture2, float minSoFar) {
-        int n = gesture1.PointsInt.Count();
+        int n = gesture1.Points.Length;
         float eps = 0.5f;
         int step = (int)Math.Floor(Math.Pow(n, 1.0f - eps));
 
@@ -88,7 +85,7 @@ public partial class QPointCloudRecognizer : Node {
     }
 
     private float[] ComputeLowerBound(Point[] points1, Point[] points2, int[][] LUT, int step) {
-        int n = points1.Count();
+        int n = points1.Length;
         float[] LB = new float[n / step + 1];
         float[] SAT = new float[n];
 
@@ -121,8 +118,7 @@ public partial class QPointCloudRecognizer : Node {
             float minDistance = float.MaxValue;
             for (int j = indexNotMatched; j < n; j++) {
                 float dist = SqrEuclideanDistance(points1[i], points2[indexesNotMatched[j]]);  
-                if (dist < minDistance)
-                {
+                if (dist < minDistance) {
                     minDistance = dist;
                     index = j;
                 }
