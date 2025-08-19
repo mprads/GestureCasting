@@ -36,108 +36,113 @@ public partial class QPointCloudRecognizer : Node {
     public void Init() {
         var dir = DirAccess.Open(gestureLibraryPath);
 
-        if (dir != null) {
-            dir.ListDirBegin();
-            string fileName = dir.GetNext();
-            while (fileName != "") {
-                string resourceName = gestureLibraryPath + fileName.ToString();
-                Resource gestureResource = ResourceLoader.Load(resourceName);
-                GestureSet.Add((Gesture)gestureResource);
-                fileName = dir.GetNext();
-            }
-        }
+        // if (dir != null) {
+        //     dir.ListDirBegin();
+        //     string fileName = dir.GetNext();
+        //     while (fileName != "") {
+        //         string resourceName = gestureLibraryPath + fileName.ToString();
+        //         Resource gestureResource = ResourceLoader.Load(resourceName);
+        //         GestureSet.Add((Gesture)gestureResource);
+        //         fileName = dir.GetNext();
+        //     }
+        // }
     }
 
     public string Classify(Gesture candidate) {
         float minDistance = float.MaxValue;
-            string gestureClass = "";
-            foreach (Gesture template in GestureSet) {
-                float dist = GreedyCloudMatch(candidate, template, minDistance);
-                if (dist < minDistance) {
-                    minDistance = dist;
-                    gestureClass = template.Name;
-                }
+        string gestureClass = "";
+        foreach (Gesture template in GestureSet) {
+            float dist = GreedyCloudMatch(candidate, template, minDistance);
+            if (dist < minDistance) {
+                minDistance = dist;
+                gestureClass = template.Name;
             }
-            return gestureClass;
+        }
+
+        return gestureClass;
     }
 
     private float GreedyCloudMatch(Gesture gesture1, Gesture gesture2, float minSoFar) {
-        int n = gesture1.Points.Length;
+        int gesturePointLength = gesture1.Points.Length;
         float eps = 0.5f;
-        int step = (int)Math.Floor(Math.Pow(n, 1.0f - eps));
+        int step = (int)Math.Floor(Math.Pow(gesturePointLength, 1.0f - eps));
 
 
         if (UseLowerBounding) {
             float[] LB1 = ComputeLowerBound(gesture1.Points, gesture2.Points, gesture2.LUT, step);
             float[] LB2 = ComputeLowerBound(gesture2.Points, gesture1.Points, gesture1.LUT, step);
-            for (int i = 0, indexLB = 0; i < n; i += step, indexLB++) {
+            for (int i = 0, indexLB = 0; i < gesturePointLength; i += step, indexLB++) {
                 if (LB1[indexLB] < minSoFar) minSoFar = Math.Min(minSoFar, CloudDistance(gesture1.Points, gesture2.Points, i, minSoFar));
                 if (LB2[indexLB] < minSoFar) minSoFar = Math.Min(minSoFar, CloudDistance(gesture2.Points, gesture1.Points, i, minSoFar));
             }
         } else {
-            for (int i = 0; i < n; i += step) {
+            for (int i = 0; i < gesturePointLength; i += step) {
                 minSoFar = Math.Min(minSoFar, CloudDistance(gesture1.Points, gesture2.Points, i, minSoFar));
                 minSoFar = Math.Min(minSoFar, CloudDistance(gesture2.Points, gesture1.Points, i, minSoFar));
-            }   
+            }
         }
 
         return minSoFar;
     }
 
     private float[] ComputeLowerBound(Point[] points1, Point[] points2, int[][] LUT, int step) {
-        int n = points1.Length;
-        float[] LB = new float[n / step + 1];
-        float[] SAT = new float[n];
+        int pointsLength = points1.Length;
+        float[] LB = new float[pointsLength / step + 1];
+        float[] SAT = new float[pointsLength];
 
         LB[0] = 0;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < pointsLength; i++) {
             int index = LUT[points1[i].intY / Gesture.LUT_SCALE_FACTOR][points1[i].intX / Gesture.LUT_SCALE_FACTOR];
             float dist = SqrEuclideanDistance(points1[i], points2[index]);
             SAT[i] = (i == 0) ? dist : SAT[i - 1] + dist;
-            LB[0] += (n - i) * dist;
+            LB[0] += (pointsLength - i) * dist;
         }
 
-        for (int i = step, indexLB = 1; i < n; i += step, indexLB++)
-            LB[indexLB] = LB[0] + i * SAT[n - 1] - n * SAT[i - 1];
+        for (int i = step, indexLB = 1; i < pointsLength; i += step, indexLB++)
+            LB[indexLB] = LB[0] + i * SAT[pointsLength - 1] - pointsLength * SAT[i - 1];
         return LB;
     }
 
-     private float CloudDistance(Point[] points1, Point[] points2, int startIndex, float minSoFar) {
-        int n = points1.Length;                
-        int[] indexesNotMatched = new int[n];
-        for (int j = 0; j < n; j++) {
-             indexesNotMatched[j] = j;
+    private float CloudDistance(Point[] points1, Point[] points2, int startIndex, float minSoFar) {
+        int pointsLength = points1.Length;
+        int[] indexesNotMatched = new int[pointsLength];
+        for (int j = 0; j < pointsLength; j++) {
+            indexesNotMatched[j] = j;
         }
 
-        float sum = 0;                
-        int i = startIndex;           
-        int weight = n;              
-        int indexNotMatched = 0;      
+        float sum = 0;
+        int i = startIndex;
+        int weight = pointsLength;
+        int indexNotMatched = 0;
         do {
             int index = -1;
             float minDistance = float.MaxValue;
-            for (int j = indexNotMatched; j < n; j++) {
-                float dist = SqrEuclideanDistance(points1[i], points2[indexesNotMatched[j]]);  
+            for (int j = indexNotMatched; j < pointsLength; j++) {
+                float dist = SqrEuclideanDistance(points1[i], points2[indexesNotMatched[j]]);
                 if (dist < minDistance) {
                     minDistance = dist;
                     index = j;
                 }
             }
-            indexesNotMatched[index] = indexesNotMatched[indexNotMatched];  
+            indexesNotMatched[index] = indexesNotMatched[indexNotMatched];
             sum += (weight--) * minDistance;
             if (UseEarlyAbandoning) {
-                if (sum >= minSoFar) 
-                    return sum; 
+                if (sum >= minSoFar)
+                    return sum;
             }
 
-            i = (i + 1) % n;
+            i = (i + 1) % pointsLength;
             indexNotMatched++;
         } while (i != startIndex);
 
         return sum;
-        }
+    }
 
-    private float SqrEuclideanDistance(Point a, Point b) {
+    public static float SqrEuclideanDistance(Point a, Point b) {
         return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
+    }
+    
+    public static float EuclideanDistance(Point a, Point b) {
+        return (float)Math.Sqrt(SqrEuclideanDistance(a, b));
     }
 }

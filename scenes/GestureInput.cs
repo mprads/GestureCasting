@@ -1,6 +1,10 @@
 using Game;
+using Game.Resources;
 using Godot;
+using System;
 using System.Collections.Generic;
+
+namespace Game;
 
 public partial class GestureInput : Node2D {
     [Export]
@@ -8,15 +12,15 @@ public partial class GestureInput : Node2D {
     [Export]
     private bool lineAntiAlias = true;
     [Export]
-    private Color lineColor = new Color("WHITE");
+    private Color lineColor = new("WHITE");
 
     private Line2D stroke = null;
     private int strokeIndex = -1;
     private List<Point> points = null;
-    private QPointCloudRecognizer Recognizer = new QPointCloudRecognizer();
+    private QPointCloudRecognizer Recognizer = new();
 
     public override void _Ready() {
-        // Recognizer.Init();
+        Recognizer.Init();
     }
 
     public override void _Input(InputEvent @event) {
@@ -29,12 +33,13 @@ public partial class GestureInput : Node2D {
             if (strokeIndex == -1) {
                 points = new List<Point>();
             }
-            stroke = new Line2D();
-            stroke.BeginCapMode = Line2D.LineCapMode.Round;
-            stroke.EndCapMode = Line2D.LineCapMode.Round;
-            stroke.DefaultColor = lineColor;
-            stroke.Antialiased = lineAntiAlias;
-            stroke.Width = lineWitdth;
+            stroke = new Line2D {
+                BeginCapMode = Line2D.LineCapMode.Round,
+                EndCapMode = Line2D.LineCapMode.Round,
+                DefaultColor = lineColor,
+                Antialiased = lineAntiAlias,
+                Width = lineWitdth
+            };
             strokeIndex++;
             AddChild(stroke);
         }
@@ -52,8 +57,10 @@ public partial class GestureInput : Node2D {
     }
 
     private void RecognizeGesture() {
-        for (int i = 0; i < points.Count; i++) {
-            GD.Print(points[i].ToString());
-        } 
+        Gesture candidate = new Gesture(points.ToArray());
+        // GD.Print(candidate.Points);
+        // string gestureClass = Recognizer.Classify(candidate);
+
+        // GD.Print(gestureClass);
     }
 }
