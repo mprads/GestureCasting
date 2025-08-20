@@ -1,4 +1,5 @@
 using Godot;
+using System;
 
 namespace Game.Resources;
 
@@ -42,28 +43,27 @@ public partial class Gesture : Resource {
         int numPoints = 1;
 
         float interval = PathLength(points) / (resolution - 1);
-        float distance = 0f;
+        float sum = 0f;
         for (int i = 1; i < points.Length; i++) {
             if (points[i].StrokeID == points[i - 1].StrokeID) {
-                float delta = QPointCloudRecognizer.EuclideanDistance(points[i - 1], points[i]);
-                if (distance + delta >= interval) {
+                float distance = QPointCloudRecognizer.EuclideanDistance(points[i - 1], points[i]);
+                if (sum + distance >= interval) {
                     Point firstPoint = points[i - 1];
-                    while (distance + delta >= interval) {
-                        float minInterpolation = Mathf.Min(Mathf.Max((interval - distance) / delta, 0.0f), 1.0f);
+                    while (sum + distance >= interval) {
+                        float minInterpolation = Mathf.Min(Mathf.Max((interval - sum) / distance, 0.0f), 1.0f);
                         if (float.IsNaN(minInterpolation)) minInterpolation = 0.5f;
-                        GD.Print(i,": ",(1.0f - minInterpolation) * firstPoint.X + minInterpolation * points[i].X, "   ", (1.0f - minInterpolation) * firstPoint.Y + minInterpolation * points[i].Y);
                         newPoints[numPoints++] = new Point(
                             (1.0f - minInterpolation) * firstPoint.X + minInterpolation * points[i].X,
                             (1.0f - minInterpolation) * firstPoint.Y + minInterpolation * points[i].Y,
                             points[i].StrokeID
                         );
-                        delta = distance + delta - interval;
-                        distance = 0f;
+                        distance = sum + distance - interval;
+                        sum = 0f;
                         firstPoint = newPoints[numPoints - 1];
                     }
-                    distance = delta;
+                    sum = distance;
                 } else {
-                    distance += delta;
+                    sum += distance;
                 }
             }
         }
@@ -72,10 +72,6 @@ public partial class Gesture : Resource {
             newPoints[numPoints++] = new Point(points[points.Length - 1].X, points[points.Length - 1].Y, points[points.Length - 1].StrokeID);
         }
 
-        GD.Print(numPoints,  "====");
-        for (int i = 0; i < newPoints.Length; i++) {
-            GD.Print(i, ": ", newPoints[i].ToString());
-        }
         return newPoints;
     }
 
@@ -146,11 +142,12 @@ public partial class Gesture : Resource {
     }
 
     private float PathLength(Point[] points) {
-        float lenght = 0f;
+        float length = 0;
         for (int i = 1; i < points.Length; i++) {
-            lenght += QPointCloudRecognizer.EuclideanDistance(points[i - 1], points[i]);
+            if (points[i].StrokeID == points[i - 1].StrokeID)
+                length += QPointCloudRecognizer.EuclideanDistance(points[i - 1], points[i]);
         }
-
-        return lenght;
+                
+        return length;
     }
 }

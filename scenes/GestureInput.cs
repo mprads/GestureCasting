@@ -1,7 +1,5 @@
-using Game;
 using Game.Resources;
 using Godot;
-using System;
 using System.Collections.Generic;
 
 namespace Game;
@@ -58,7 +56,7 @@ public partial class GestureInput : Node2D {
 
     private void RecognizeGesture() {
         Gesture candidate = new Gesture(points.ToArray());
-        // GD.Print(candidate.Points);
+        GD.Print(candidate.Points);
         // string gestureClass = Recognizer.Classify(candidate);
 
         // GD.Print(gestureClass);
