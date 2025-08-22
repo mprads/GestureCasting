@@ -8,7 +8,7 @@ public partial class Gesture : Resource {
     public string Name = "";
 
     [Export]
-    public Point[] Points,  PointsRaw = null;
+    public Point[] Points,  PointsRaw = [];
 
     private const int SAMPLING_RESOLUTION = 64;                             // default number of points on the gesture path
     private const int MAX_INT_COORDINATES = 1024;                           // $Q only: each point has two additional x and y integer coordinates in the interval [0..MAX_INT_COORDINATES-1] used to operate the LUT table efficiently (O(1))
@@ -16,7 +16,7 @@ public partial class Gesture : Resource {
     public static int LUT_SCALE_FACTOR = MAX_INT_COORDINATES / LUT_SIZE;    // $Q only: scale factor to convert between integer x and y coordinates and the size of the LUT
     public int[][] LUT = null;
 
-    public Gesture() : this(null, null) {}
+    public Gesture() : this([], null) {}
 
     public Gesture(Point[] points, string gestureName = "") {
         this.Name = gestureName;
@@ -24,6 +24,8 @@ public partial class Gesture : Resource {
         for (int i = 0; i < points.Length; i++) {
             this.PointsRaw[i] = new Point(points[i].X, points[i].Y, points[i].StrokeID);
         }
+
+        if (points.Length <= 0) return;
 
         this.Normalize();
     }

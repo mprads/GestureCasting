@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Resources;
 using Godot;
 
@@ -32,19 +33,24 @@ public partial class QPointCloudRecognizer : Node {
 
     private List<Gesture> GestureSet = new();
 
-    public void Init() {
-        var dir = DirAccess.Open(GESTURE_LIBRARY_PATH);
+    public void Init(Godot.Collections.Array<Gesture> gestureLibray) {
+        // var dir = DirAccess.Open(GESTURE_LIBRARY_PATH);
 
-        if (dir != null) {
-            dir.ListDirBegin();
-            string fileName = dir.GetNext();
-            while (fileName != "") {
-                string resourceName = GESTURE_LIBRARY_PATH + fileName.ToString();
-                Resource gestureResource = ResourceLoader.Load<Gesture>(resourceName);
-                GD.Print(gestureResource);
-                // GestureSet.Add((Gesture)gestureResource);
-                fileName = dir.GetNext();
-            }
+        // if (dir != null) {
+        //     dir.ListDirBegin();
+        //     string fileName = dir.GetNext();
+        //     while (fileName != "") {
+        //         string resourceName = GESTURE_LIBRARY_PATH + fileName.ToString();
+        //         Resource gestureResource = ResourceLoader.Load<Gesture>(resourceName);
+        //         GD.Print(gestureResource);
+        //         // GestureSet.Add((Gesture)gestureResource);
+        //         fileName = dir.GetNext();
+        //     }
+        // }
+
+        // Cannot convert GD Array to list so have to loop and add to GestureSet
+        foreach (Gesture gestureResource in gestureLibray) {
+            GestureSet.Add(gestureResource);
         }
     }
 

@@ -2,6 +2,7 @@ using Game.Resources;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game;
 
@@ -14,6 +15,8 @@ public partial class GestureInput : Control {
     private bool lineAntiAlias = true;
     [Export]
     private Color lineColor = new("WHITE");
+    [Export]
+    private Godot.Collections.Array<Gesture> gestureLibray = []; // Cannot export a typed list
 
     private Button saveButton;
     private TextEdit gestureNameTextEdit;
@@ -31,7 +34,8 @@ public partial class GestureInput : Control {
 
         saveButton.Pressed += OnSaveButtonPressed;
 
-        Recognizer.Init();
+        GD.Print("before init");
+        Recognizer.Init(gestureLibray);
     }
 
     public override void _Input(InputEvent @event) {
@@ -79,10 +83,11 @@ public partial class GestureInput : Control {
             return;
         }
 
-        Gesture candidate = new Gesture(points.ToArray());
+        Gesture newGesture = new Gesture(points.ToArray());
+        newGesture.Name = gestureNameTextEdit.Text;
         string path = GESTURE_LIBRARY_PATH + "/" + gestureNameTextEdit.Text + ".tres";
 
-        ResourceSaver.Save(candidate, path);
+        ResourceSaver.Save(newGesture, path);
     }
 
     private void OnSaveButtonPressed() {

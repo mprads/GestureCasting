@@ -10,6 +10,8 @@ public partial class Point : Resource {
     [Export]
     public int intX, intY, StrokeID;
 
+    public Point() : this(0f, 0f, 0) {}
+
     public Point(float x, float y, int strokeId) {
         this.X = x;
         this.Y = y;
