@@ -12,7 +12,6 @@
 // Copyright (c) 2018, Radu-Daniel Vatavu, Lisa Anthony, and 
 // Jacob O. Wobbrock. All rights reserved.
 
-
 using System;
 using System.Collections.Generic;
 using Game.Resources;
@@ -21,7 +20,7 @@ using Godot;
 namespace Game;
 
 public partial class QPointCloudRecognizer : Node {
-    const string gestureLibraryPath = "res://resources/gesture_library";
+    const string GESTURE_LIBRARY_PATH = "res://resources/gesture_library/";
 
     [Signal]
     public delegate void GestureClassifiedEventHandler(string gestureName);
@@ -34,18 +33,19 @@ public partial class QPointCloudRecognizer : Node {
     private List<Gesture> GestureSet = new();
 
     public void Init() {
-        var dir = DirAccess.Open(gestureLibraryPath);
+        var dir = DirAccess.Open(GESTURE_LIBRARY_PATH);
 
-        // if (dir != null) {
-        //     dir.ListDirBegin();
-        //     string fileName = dir.GetNext();
-        //     while (fileName != "") {
-        //         string resourceName = gestureLibraryPath + fileName.ToString();
-        //         Resource gestureResource = ResourceLoader.Load(resourceName);
-        //         GestureSet.Add((Gesture)gestureResource);
-        //         fileName = dir.GetNext();
-        //     }
-        // }
+        if (dir != null) {
+            dir.ListDirBegin();
+            string fileName = dir.GetNext();
+            while (fileName != "") {
+                string resourceName = GESTURE_LIBRARY_PATH + fileName.ToString();
+                Resource gestureResource = ResourceLoader.Load<Gesture>(resourceName);
+                GD.Print(gestureResource);
+                // GestureSet.Add((Gesture)gestureResource);
+                fileName = dir.GetNext();
+            }
+        }
     }
 
     public string Classify(Gesture candidate) {

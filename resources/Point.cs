@@ -1,7 +1,13 @@
-namespace Game;
+using Godot;
 
-public class Point {
+namespace Game.Resources;
+
+[GlobalClass]
+public partial class Point : Resource {
+
+    [Export]
     public float X, Y;
+    [Export]
     public int intX, intY, StrokeID;
 
     public Point(float x, float y, int strokeId) {

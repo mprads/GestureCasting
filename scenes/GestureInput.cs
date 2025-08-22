@@ -1,10 +1,13 @@
 using Game.Resources;
 using Godot;
+using System;
 using System.Collections.Generic;
 
 namespace Game;
 
-public partial class GestureInput : Node2D {
+public partial class GestureInput : Control {
+    const string GESTURE_LIBRARY_PATH = "C:/Users/myles/Documents/GameDev/GestureCasting/resources/gesture_library";
+
     [Export]
     private int lineWitdth = 5;
     [Export]
@@ -12,12 +15,22 @@ public partial class GestureInput : Node2D {
     [Export]
     private Color lineColor = new("WHITE");
 
+    private Button saveButton;
+    private TextEdit gestureNameTextEdit;
+    private Label gestureLabel;
+
     private Line2D stroke = null;
     private int strokeIndex = -1;
     private List<Point> points = null;
     private QPointCloudRecognizer Recognizer = new();
-
+    
     public override void _Ready() {
+        saveButton = GetNode<Button>("%SaveButton");
+        gestureNameTextEdit = GetNode<TextEdit>("%GestureNameTextEdit");
+        gestureLabel = GetNode<Label>("%GestureLabel");
+
+        saveButton.Pressed += OnSaveButtonPressed;
+
         Recognizer.Init();
     }
 
@@ -56,9 +69,23 @@ public partial class GestureInput : Node2D {
 
     private void RecognizeGesture() {
         Gesture candidate = new Gesture(points.ToArray());
-        GD.Print(candidate.Points);
-        // string gestureClass = Recognizer.Classify(candidate);
+        string gestureClass = Recognizer.Classify(candidate);
 
-        // GD.Print(gestureClass);
+        gestureLabel.Text = gestureClass;
+    }
+
+    private void SaveGesture() {
+        if (points.Count == 0) {
+            return;
+        }
+
+        Gesture candidate = new Gesture(points.ToArray());
+        string path = GESTURE_LIBRARY_PATH + "/" + gestureNameTextEdit.Text + ".tres";
+
+        ResourceSaver.Save(candidate, path);
+    }
+
+    private void OnSaveButtonPressed() {
+        SaveGesture();
     }
 }
