@@ -42,14 +42,15 @@ public partial class QPointCloudRecognizer : Node {
         //     while (fileName != "") {
         //         string resourceName = GESTURE_LIBRARY_PATH + fileName.ToString();
         //         Resource gestureResource = ResourceLoader.Load<Gesture>(resourceName);
-        //         GD.Print(gestureResource);
-        //         // GestureSet.Add((Gesture)gestureResource);
+        //         GestureSet.Add((Gesture)gestureResource);
         //         fileName = dir.GetNext();
         //     }
         // }
 
         // Cannot convert GD Array to list so have to loop and add to GestureSet
+        // Have to reconstruct LUT as Godot can't serialize the field, maybe change to dictionary
         foreach (Gesture gestureResource in gestureLibray) {
+            gestureResource.ConstructLUT();
             GestureSet.Add(gestureResource);
         }
     }

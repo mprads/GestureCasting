@@ -8,7 +8,7 @@ public partial class Gesture : Resource {
     public string Name = "";
 
     [Export]
-    public Point[] Points,  PointsRaw = [];
+    public Point[] Points, PointsRaw = [];
 
     private const int SAMPLING_RESOLUTION = 64;                             // default number of points on the gesture path
     private const int MAX_INT_COORDINATES = 1024;                           // $Q only: each point has two additional x and y integer coordinates in the interval [0..MAX_INT_COORDINATES-1] used to operate the LUT table efficiently (O(1))
@@ -16,7 +16,8 @@ public partial class Gesture : Resource {
     public static int LUT_SCALE_FACTOR = MAX_INT_COORDINATES / LUT_SIZE;    // $Q only: scale factor to convert between integer x and y coordinates and the size of the LUT
     public int[][] LUT = null;
 
-    public Gesture() : this([], null) {}
+
+    public Gesture() : this([], null) { }
 
     public Gesture(Point[] points, string gestureName = "") {
         this.Name = gestureName;
@@ -79,25 +80,7 @@ public partial class Gesture : Resource {
         return newPoints;
     }
 
-    private Point[] Scale(Point[] points) {
-        float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
-        for (int i = 0; i < points.Length; i++) {
-            if (minX > points[i].X) minX = points[i].X;
-            if (minY > points[i].Y) minY = points[i].Y;
-            if (maxX < points[i].X) maxX = points[i].X;
-            if (maxY < points[i].Y) maxY = points[i].Y;
-        }
-
-        Point[] newPoints = new Point[points.Length];
-        float scale = Mathf.Max(maxX - minX, maxY - minY);
-        for (int i = 0; i < points.Length; i++) {
-            newPoints[i] = new Point((points[i].X - minX) / scale, (points[i].Y - minY) / scale, points[i].StrokeID);
-        }
-
-        return newPoints;
-    }
-
-    private void ConstructLUT() {
+    public void ConstructLUT() {
         this.LUT = new int[LUT_SIZE][];
         for (int i = 0; i < LUT_SIZE; i++) {
             LUT[i] = new int[LUT_SIZE];
@@ -119,6 +102,24 @@ public partial class Gesture : Resource {
                 LUT[i][j] = indexMin;
             }
         }
+    }
+
+    private Point[] Scale(Point[] points) {
+        float minX = float.MaxValue, minY = float.MaxValue, maxX = float.MinValue, maxY = float.MinValue;
+        for (int i = 0; i < points.Length; i++) {
+            if (minX > points[i].X) minX = points[i].X;
+            if (minY > points[i].Y) minY = points[i].Y;
+            if (maxX < points[i].X) maxX = points[i].X;
+            if (maxY < points[i].Y) maxY = points[i].Y;
+        }
+
+        Point[] newPoints = new Point[points.Length];
+        float scale = Mathf.Max(maxX - minX, maxY - minY);
+        for (int i = 0; i < points.Length; i++) {
+            newPoints[i] = new Point((points[i].X - minX) / scale, (points[i].Y - minY) / scale, points[i].StrokeID);
+        }
+
+        return newPoints;
     }
 
     private Point Centroid(Point[] points) {

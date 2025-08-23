@@ -34,7 +34,6 @@ public partial class GestureInput : Control {
 
         saveButton.Pressed += OnSaveButtonPressed;
 
-        GD.Print("before init");
         Recognizer.Init(gestureLibray);
     }
 
