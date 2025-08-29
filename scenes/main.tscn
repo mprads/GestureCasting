@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://jtyp3y8ur2j2"]
+[gd_scene load_steps=3 format=3 uid="uid://jtyp3y8ur2j2"]
 
-[ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/gesture_input.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://oj3blpxqf1bl" path="res://scenes/TestMap.tscn" id="2_sugp2"]
 
 [node name="Main" type="Node3D"]
 
 [node name="GestureInput" parent="." instance=ExtResource("2_0wfyh")]
+
+[node name="TestMap" parent="." instance=ExtResource("2_sugp2")]
