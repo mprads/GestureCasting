@@ -40,9 +40,9 @@ public partial class PlayerStateMachine : Node {
         }
     }
 
-    public override void _Input(InputEvent @event) {
+    public override void _UnhandledInput(InputEvent @event) {
         if (currentState != null) {
-            currentState.Input(@event);
+            currentState.UnhandledInput(@event);
         }
     }
 

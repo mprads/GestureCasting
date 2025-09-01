@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=6 format=3 uid="uid://d0gb5yk3bkywt"]
 
 [ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
+[ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
+[ext_resource type="Script" uid="uid://cfmkbysol5w80" path="res://scripts/state_machines/PlayerStateMachine.cs" id="2_gfjak"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gmlin"]
 
@@ -10,10 +12,20 @@ points = PackedVector3Array(-0.12520654, -0.532801, -0.4805069, 0.022783129, 0.4
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_8afob")
 
+[node name="CameraController" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("2_4kuee")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_gmlin")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("ConvexPolygonShape3D_8afob")
+
+[node name="StateMachine" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_gfjak")
+InitialState = 1
