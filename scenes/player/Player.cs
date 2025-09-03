@@ -11,6 +11,10 @@ public partial class Player : CharacterBody3D {
     public float SprintAcceleration = 5.0f;
     public float SprintDeceleration = 5.0f;
 
+     public float CrouchSpeed = 4.0f;
+    public float CrouchAcceleration = 2.0f;
+    public float CrouchDeceleration = 2.0f;
+
     public float JumpHeight = 2.0f;
     public float JumpTimeToPeak = 0.3f;
     public float JumpTimeToFall = .24f;
