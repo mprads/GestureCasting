@@ -46,6 +46,10 @@ public partial class PlayerStateMachine : Node {
         }
     }
 
+    public string GetCurrentStateName() {
+        return currentState.GetType().Name;
+    }
+
     private void OnTransitionRequested(PlayerState from, STATE to) {
         if (from != currentState) return;
         if (!states.ContainsKey(to)) return;
