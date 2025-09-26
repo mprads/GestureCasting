@@ -16,6 +16,7 @@ public partial class PlayerStateJump : PlayerState {
             Vector3 newVelocity = Vector3.Zero;
             newVelocity.X = Mathf.Lerp(player.Velocity.X, moveDirection.X * player.WalkSpeed, player.WalkAcceleration * (float)delta);
             newVelocity.Z = Mathf.Lerp(player.Velocity.Z, moveDirection.Z * player.WalkSpeed, player.WalkAcceleration * (float)delta);
+            newVelocity.Y = player.Velocity.Y;
 
             player.Velocity = newVelocity;
         }

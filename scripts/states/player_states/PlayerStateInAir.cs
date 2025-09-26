@@ -16,9 +16,10 @@ public partial class PlayerStateInAir : PlayerState {
 
         if (!player.IsOnFloor()) {
             if (moveDirection != Vector3.Zero) {
-                 Vector3 newVelocity = Vector3.Zero;
+                Vector3 newVelocity = Vector3.Zero;
                 newVelocity.X = Mathf.Lerp(player.Velocity.X, moveDirection.X * player.SprintSpeed, player.SprintAcceleration * (float)delta);
                 newVelocity.Z = Mathf.Lerp(player.Velocity.Z, moveDirection.Z * player.SprintSpeed, player.SprintAcceleration * (float)delta);
+                newVelocity.Y = player.Velocity.Y;
 
                 player.Velocity = newVelocity;
             }
@@ -27,4 +28,10 @@ public partial class PlayerStateInAir : PlayerState {
         player.MoveAndSlide();
     }
 
+    public override void CheckFloor() {
+        // Check for jump buffer
+        if (player.IsOnFloor()) {
+            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.WALK);
+        }
+    }
 }

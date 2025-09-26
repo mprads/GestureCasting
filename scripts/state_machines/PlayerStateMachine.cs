@@ -59,9 +59,7 @@ public partial class PlayerStateMachine : Node {
         if (currentState != null) {
             currentState.Exit();
         }
-
         currentState = nextState;
         currentState.Enter();
-
     }
 }

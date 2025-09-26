@@ -30,6 +30,7 @@ public partial class PlayerState : Node {
             Vector3 newVelocity = Vector3.Zero;
             newVelocity.X = Mathf.Lerp(player.Velocity.X, moveDirection.X * player.WalkSpeed, player.WalkAcceleration * (float)delta);
             newVelocity.Z = Mathf.Lerp(player.Velocity.Z, moveDirection.Z * player.WalkSpeed, player.WalkAcceleration * (float)delta);
+            newVelocity.Y = player.Velocity.Y;
 
             player.Velocity = newVelocity;
             player.MoveAndSlide();
@@ -41,7 +42,7 @@ public partial class PlayerState : Node {
             Vector3 jumpVelocity = player.Velocity;
             jumpVelocity.Y += player.JumpGravity * (float)delta;
             player.Velocity = jumpVelocity;
-        } else if (player.Velocity.Y <= 0.0f) {
+        } else if (player.Velocity.Y < 0.0f) {
             Vector3 fallVelocity = player.Velocity;
             fallVelocity.Y += player.FallGravity * (float)delta;
             player.Velocity = fallVelocity;
@@ -50,8 +51,7 @@ public partial class PlayerState : Node {
 
     public virtual void CheckFloor() {
         if (!player.IsOnFloor()) {
-            GD.Print("Not on floor");
-            EmitSignal(SignalName.TransitionRequested, (int)PlayerStateMachine.STATE.INAIR);
+            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.INAIR);
         }
     }
 }

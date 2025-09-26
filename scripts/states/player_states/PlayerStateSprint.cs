@@ -26,6 +26,7 @@ public partial class PlayerStateSprint : PlayerState {
             Vector3 newVelocity = Vector3.Zero;
             newVelocity.X = Mathf.Lerp(player.Velocity.X, moveDirection.X * player.SprintSpeed, player.SprintAcceleration * (float)delta);
             newVelocity.Z = Mathf.Lerp(player.Velocity.Z, moveDirection.Z * player.SprintSpeed, player.SprintAcceleration * (float)delta);
+            newVelocity.Y = player.Velocity.Y;
 
             player.Velocity = newVelocity;
             player.MoveAndSlide();
