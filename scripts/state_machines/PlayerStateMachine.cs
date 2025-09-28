@@ -7,7 +7,7 @@ namespace Game;
 [GlobalClass]
 public partial class PlayerStateMachine : Node {
 
-    public enum STATE { IDLE, WALK, SPRINT, CROUCH, JUMP, INAIR }
+    public enum STATE { IDLE, WALK, SPRINT, CROUCH, JUMP, INAIR, CASTING }
 
     [Export]
     private STATE InitialState;
@@ -22,6 +22,7 @@ public partial class PlayerStateMachine : Node {
         states[STATE.CROUCH] = new PlayerStateCrouch();
         states[STATE.JUMP] = new PlayerStateJump();
         states[STATE.INAIR] = new PlayerStateInAir();
+        states[STATE.CASTING] = new PlayerStateCasting();
 
         foreach (PlayerState state in states.Values) {
             state.player = player;

@@ -12,7 +12,8 @@ public partial class PlayerStateWalk : PlayerState {
             if (player.Velocity != Vector3.Zero) {
                 EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.SPRINT);
             }
-
+        }  else if (@event.IsActionPressed("toggle_mouse_mode")) {
+            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.CASTING);
         }
     }
 }

@@ -17,15 +17,5 @@ public partial class CameraController : Node3D {
         if (@event is InputEventMouseMotion castedEvent) {
             RotateY(-castedEvent.Relative.X * MouseSensitivity);
         }
-
-        if (@event.IsActionPressed("toggle_mouse_mode")) {
-            if (Input.MouseMode == Input.MouseModeEnum.Captured) {
-                Input.MouseMode = Input.MouseModeEnum.Visible;
-            } else {
-                Input.MouseMode = Input.MouseModeEnum.Captured;
-            }
-            
-        }
     }
-
 }
