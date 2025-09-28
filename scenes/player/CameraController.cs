@@ -7,6 +7,7 @@ public partial class CameraController : Node3D {
     [Export]
     public float MouseSensitivity = 0.005f;
 
+    private bool cameraEnabled = true;
     private Vector2 mouseInput = Vector2.Zero;
 
     public override void _Ready() {
@@ -15,7 +16,17 @@ public partial class CameraController : Node3D {
 
     public override void _Input(InputEvent @event) {
         if (@event is InputEventMouseMotion castedEvent) {
-            RotateY(-castedEvent.Relative.X * MouseSensitivity);
+            if (cameraEnabled) {
+                RotateY(-castedEvent.Relative.X * MouseSensitivity);
+            }
         }
+    }
+
+    public void EnableCamera() {
+        cameraEnabled = true;
+    }
+
+    public void DisableCamera() {
+        cameraEnabled = false;
     }
 }

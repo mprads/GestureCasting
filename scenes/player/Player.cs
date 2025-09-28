@@ -1,4 +1,5 @@
 using System;
+using Game.Camera;
 using Godot;
 
 namespace Game.Entities;
@@ -7,7 +8,6 @@ public partial class Player : CharacterBody3D {
     public float WalkSpeed = 8.0f;
     public float WalkAcceleration = 8.0f;
     
-
     public float SprintSpeed = 12.0f;
     public float SprintAcceleration = 5.0f;
 
@@ -30,7 +30,7 @@ public partial class Player : CharacterBody3D {
     public Vector3 PreviousVelocity;
     public bool WasOnFloor;
 
-    public Node3D CameraController;
+    public CameraController CameraController;
 
     private PlayerStateMachine playerStateMachine;
 
@@ -39,7 +39,7 @@ public partial class Player : CharacterBody3D {
     private Label horizontalVelocityLabel;
 
     public override void _Ready() {
-        CameraController = GetNode<Node3D>("%CameraController");
+        CameraController = GetNode<CameraController>("%CameraController");
         playerStateMachine = GetNode<PlayerStateMachine>("%StateMachine");
         stateLabel = GetNode<Label>("%StateLabel");
         velocityLabel = GetNode<Label>("%VelocityLabel");

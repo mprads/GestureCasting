@@ -22,22 +22,9 @@ public partial class PlayerState : Node {
 
     public virtual void UnhandledInput(InputEvent @event) { }
 
-    public virtual void Move(double delta) {
-        Vector2 inputDirection = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
-        Vector3 moveDirection = (player.CameraController.GlobalBasis * new Vector3(inputDirection.X, 0.0f, inputDirection.Y)).Normalized();
-        Vector3 newVelocity = Vector3.Zero;
-        newVelocity.Y = player.Velocity.Y;
-
-        if (moveDirection != Vector3.Zero) {
-            newVelocity.X = Mathf.Lerp(player.Velocity.X, moveDirection.X * player.WalkSpeed, player.WalkAcceleration * (float)delta);
-            newVelocity.Z = Mathf.Lerp(player.Velocity.Z, moveDirection.Z * player.WalkSpeed, player.WalkAcceleration * (float)delta);
-        } else {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
-        }
-
-        player.Velocity = newVelocity;
-        player.MoveAndSlide();
-    }
+    // TODO change this to accept speed and acceleration, but defualt to walk
+    // maybe add flag to exclude transistioning to idle for in air and casting
+    public virtual void Move(double delta) { }
 
     public virtual void ApplyGravity(double delta) {
         if (!player.IsOnFloor()) {
@@ -51,7 +38,6 @@ public partial class PlayerState : Node {
                 player.Velocity = fallVelocity;
             }
         }
-        
     }
 
     public virtual void CheckFloor() {
