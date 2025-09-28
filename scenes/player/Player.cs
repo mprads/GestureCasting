@@ -6,15 +6,15 @@ namespace Game.Entities;
 public partial class Player : CharacterBody3D {
     public float WalkSpeed = 8.0f;
     public float WalkAcceleration = 8.0f;
-    public float WalkDeceleration = 8.0f;
+    
 
     public float SprintSpeed = 12.0f;
     public float SprintAcceleration = 5.0f;
-    public float SprintDeceleration = 5.0f;
 
     public float CrouchSpeed = 4.0f;
     public float CrouchAcceleration = 2.0f;
-    public float CrouchDeceleration = 5.0f;
+
+    public float Deceleration = 8.0f;
 
     public float AirSpeed = 30.0f;
 
@@ -36,21 +36,22 @@ public partial class Player : CharacterBody3D {
 
     private Label stateLabel;
     private Label velocityLabel;
-
+    private Label horizontalVelocityLabel;
 
     public override void _Ready() {
         CameraController = GetNode<Node3D>("%CameraController");
         playerStateMachine = GetNode<PlayerStateMachine>("%StateMachine");
         stateLabel = GetNode<Label>("%StateLabel");
         velocityLabel = GetNode<Label>("%VelocityLabel");
+        horizontalVelocityLabel = GetNode<Label>("%HorizontalVelocityLabel");
         playerStateMachine.Init(this);
     }
 
     public override void _Process(double delta) {
         stateLabel.Text = playerStateMachine.GetCurrentStateName();
         velocityLabel.Text = Velocity.ToString();
+        horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
     }
-
 
     public override void _PhysicsProcess(double delta) {
         PreviousPosition = Position;
