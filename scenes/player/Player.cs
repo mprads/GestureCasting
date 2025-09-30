@@ -31,6 +31,8 @@ public partial class Player : CharacterBody3D {
     public bool WasOnFloor;
 
     public CameraController CameraController;
+    public Timer CoyoteTimer;
+    public Timer JumpBufferTimer;
 
     private PlayerStateMachine playerStateMachine;
 
@@ -40,6 +42,8 @@ public partial class Player : CharacterBody3D {
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
+        CoyoteTimer = GetNode<Timer>("%CoyoteTimer");
+        JumpBufferTimer = GetNode<Timer>("%JumpBufferTimer");
         playerStateMachine = GetNode<PlayerStateMachine>("%StateMachine");
         stateLabel = GetNode<Label>("%StateLabel");
         velocityLabel = GetNode<Label>("%VelocityLabel");

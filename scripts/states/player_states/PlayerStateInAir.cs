@@ -5,7 +5,26 @@ namespace Game.States;
 public partial class PlayerStateInAir : PlayerState {
 
     public override void Enter() {
-        // Set up timers for buffer and coyote jump
+        if (player.Velocity.Y <= 0) {
+            player.CoyoteTimer.Start();
+        }
+        
+    }
+
+    public override void Exit() {
+        player.CoyoteTimer.Stop();
+        player.JumpBufferTimer.Stop();
+    }
+
+
+    public override void UnhandledInput(InputEvent @event) {
+        if (@event.IsActionPressed("jump")) {
+            if (player.CoyoteTimer.TimeLeft > 0.0f) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
+            } else {
+                player.JumpBufferTimer.Start();
+            }
+        }
     }
 
     public override void Move(double delta) {
@@ -29,9 +48,12 @@ public partial class PlayerStateInAir : PlayerState {
     }
 
     public override void CheckFloor() {
-        // Check for jump buffer
         if (player.IsOnFloor()) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.WALK);
+            if (player.JumpBufferTimer.TimeLeft > 0.0f) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
+            } else {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.WALK);
+            }
         }
     }
 }

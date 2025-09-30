@@ -18,7 +18,8 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_4kuee")
 
-[node name="Camera3D" type="Camera3D" parent="CameraController"]
+[node name="PlayerCamera" type="Camera3D" parent="CameraController"]
+unique_name_in_owner = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_gmlin")
@@ -30,6 +31,16 @@ shape = SubResource("ConvexPolygonShape3D_8afob")
 unique_name_in_owner = true
 script = ExtResource("2_gfjak")
 InitialState = 1
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.15
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.3
+one_shot = true
 
 [node name="DebugLayer" type="CanvasLayer" parent="."]
 
