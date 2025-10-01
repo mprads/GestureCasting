@@ -7,12 +7,16 @@ public partial class PlayerStateCasting : PlayerState {
 
     public override void Enter() {
         Input.MouseMode = Input.MouseModeEnum.Visible;
+        player.GestureInput.GestureRecognized += OnGestureRecognized;
         player.CameraController.DisableCamera();
+        player.GestureInput.EnableInput();
     }
 
     public override void Exit() {
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        player.GestureInput.GestureRecognized -= OnGestureRecognized;
         player.CameraController.EnableCamera();
+        player.GestureInput.DisableInput();
     }
 
     public override void UnhandledInput(InputEvent @event) {
@@ -34,5 +38,9 @@ public partial class PlayerStateCasting : PlayerState {
 
         player.Velocity = newVelocity;
         player.MoveAndSlide();
+    }
+
+    private void OnGestureRecognized(string gestureName) {
+        EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
     }
 }

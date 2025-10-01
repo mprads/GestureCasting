@@ -31,6 +31,7 @@ public partial class Player : CharacterBody3D {
     public bool WasOnFloor;
 
     public CameraController CameraController;
+    public GestureInput GestureInput;
     public Timer CoyoteTimer;
     public Timer JumpBufferTimer;
 
@@ -42,6 +43,7 @@ public partial class Player : CharacterBody3D {
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
+        GestureInput = GetNode<GestureInput>("%GestureInput");
         CoyoteTimer = GetNode<Timer>("%CoyoteTimer");
         JumpBufferTimer = GetNode<Timer>("%JumpBufferTimer");
         playerStateMachine = GetNode<PlayerStateMachine>("%StateMachine");

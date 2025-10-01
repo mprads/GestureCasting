@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=7 format=3 uid="uid://d0gb5yk3bkywt"]
 
 [ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
 [ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
 [ext_resource type="Script" uid="uid://cfmkbysol5w80" path="res://scripts/state_machines/PlayerStateMachine.cs" id="2_gfjak"]
+[ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="4_524rm"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gmlin"]
 
@@ -43,6 +44,7 @@ wait_time = 0.2
 one_shot = true
 
 [node name="DebugLayer" type="CanvasLayer" parent="."]
+layer = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DebugLayer"]
 offset_right = 205.0
@@ -62,3 +64,8 @@ text = "0.0"
 unique_name_in_owner = true
 layout_mode = 2
 text = "0.0"
+
+[node name="GestureLayer" type="CanvasLayer" parent="."]
+
+[node name="GestureInput" parent="GestureLayer" instance=ExtResource("4_524rm")]
+unique_name_in_owner = true

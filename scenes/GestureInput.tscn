@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dtiwcbyh4243l" path="res://scenes/GestureInput.cs" id="1_vprag"]
 [ext_resource type="Script" uid="uid://npujejr402qa" path="res://resources/Gesture.cs" id="2_sg2dv"]
-[ext_resource type="Resource" path="res://resources/gesture_library/Arrow.tres" id="3_bn6er"]
-[ext_resource type="Resource" path="res://resources/gesture_library/Lightning.tres" id="4_foxoc"]
-[ext_resource type="Resource" path="res://resources/gesture_library/T.tres" id="4_pnnw7"]
-[ext_resource type="Resource" path="res://resources/gesture_library/Spiral.tres" id="5_fur8p"]
-[ext_resource type="Resource" path="res://resources/gesture_library/W.tres" id="6_21k1n"]
+[ext_resource type="Resource" uid="uid://dfnp4ju3lk7vi" path="res://resources/gesture_library/Arrow.tres" id="3_bn6er"]
+[ext_resource type="Resource" uid="uid://t5ch1gk3i7hb" path="res://resources/gesture_library/Lightning.tres" id="4_foxoc"]
+[ext_resource type="Resource" uid="uid://dgpnk2nxm4db1" path="res://resources/gesture_library/T.tres" id="4_pnnw7"]
+[ext_resource type="Resource" uid="uid://dtjbei7ixr1tn" path="res://resources/gesture_library/Spiral.tres" id="5_fur8p"]
+[ext_resource type="Resource" uid="uid://cu2etwl7my4l5" path="res://resources/gesture_library/W.tres" id="6_21k1n"]
 
 [node name="GestureInput" type="Control"]
 layout_mode = 3
@@ -54,3 +54,13 @@ theme_override_font_sizes/font_size = 32
 text = "No Gesture"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="StrokesContainer" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
