@@ -1,14 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://jtyp3y8ur2j2"]
+[gd_scene load_steps=3 format=3 uid="uid://jtyp3y8ur2j2"]
 
-[ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="2_0wfyh"]
 [ext_resource type="PackedScene" uid="uid://oj3blpxqf1bl" path="res://scenes/TestMap.tscn" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://d0gb5yk3bkywt" path="res://scenes/player/Player.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node3D"]
 
-[node name="GestureInput" parent="." instance=ExtResource("2_0wfyh")]
-
 [node name="TestMap" parent="." instance=ExtResource("2_sugp2")]
 
 [node name="Player" parent="." instance=ExtResource("3_0bbpv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.662271, 1.4764577, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.662271, 2.967731, 0)
