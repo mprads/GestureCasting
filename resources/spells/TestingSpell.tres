@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=2 format=3 uid="uid://cyw0sqtchoh11"]
+
+[ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_q11ue"]
+
+[resource]
+script = ExtResource("1_q11ue")
+ProjectileReference = NodePath(".")
+metadata/_custom_type_script = "uid://ckmaspmduyyqe"
