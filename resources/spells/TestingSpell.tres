@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_q11ue")
-ProjectileReference = NodePath(".")
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"

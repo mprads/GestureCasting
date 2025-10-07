@@ -10,12 +10,12 @@ public partial class Spell : Resource {
     public float Speed = 4.0f;
     [Export]
     public float Cooldown = 2.0f;
-    [Export]
-    public PackedScene ProjectileReference;
+    public Node Owner;
 
     public void Cast(Node3D caster, Vector3 position) {
-        Projectile projectile = (Projectile)ProjectileReference.Instantiate();
-        caster.AddChild(projectile);
+        Owner = caster;
+        Projectile projectile = Projectile.CreateNew();
+        Owner.GetParent().AddChild(projectile);
         projectile.GlobalPosition = position;
     }
 }

@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=10 format=3 uid="uid://d0gb5yk3bkywt"]
 
 [ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
 [ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
 [ext_resource type="Script" uid="uid://cfmkbysol5w80" path="res://scripts/state_machines/PlayerStateMachine.cs" id="2_gfjak"]
 [ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="4_524rm"]
+[ext_resource type="Script" uid="uid://bcw6btkbvdual" path="res://managers/CastManager.cs" id="4_tpg5x"]
+[ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="5_npwbq"]
+[ext_resource type="Resource" uid="uid://cyw0sqtchoh11" path="res://resources/spells/TestingSpell.tres" id="6_v42im"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gmlin"]
 
@@ -32,6 +35,11 @@ shape = SubResource("ConvexPolygonShape3D_8afob")
 unique_name_in_owner = true
 script = ExtResource("2_gfjak")
 InitialState = 1
+
+[node name="CastManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_tpg5x")
+defaultSpells = Array[ExtResource("5_npwbq")]([ExtResource("6_v42im")])
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 unique_name_in_owner = true

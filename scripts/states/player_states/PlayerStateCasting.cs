@@ -1,9 +1,13 @@
 using Godot;
 using System;
+using Game.Resources;
 
 namespace Game.States;
 
 public partial class PlayerStateCasting : PlayerState {
+
+    [Signal]
+    public delegate void CastSpellRequestedEventHandler(string spellName);
 
     public override void Enter() {
         Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -40,7 +44,8 @@ public partial class PlayerStateCasting : PlayerState {
         player.MoveAndSlide();
     }
 
-    private void OnGestureRecognized(string gestureName) {
+    private void OnGestureRecognized(Gesture gesture) {
+        player.CastManager.Cast(gesture.Spell);
         EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
     }
 }

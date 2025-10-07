@@ -8,7 +8,7 @@ public partial class GestureInput : Control {
     const string GESTURE_LIBRARY_PATH = "C:/Users/myles/Documents/GameDev/GestureCasting/resources/gesture_library";
 
     [Signal]
-    public delegate void GestureRecognizedEventHandler(string gestureName);
+    public delegate void GestureRecognizedEventHandler(Gesture gesture);
 
     [Export]
     private int lineWitdth = 5;
@@ -94,7 +94,6 @@ public partial class GestureInput : Control {
 
         gestureLabel.Text = $"{gesture.Name} {distance}";
 
-        // Need to handle when a match is below threshold
         EmitSignal(SignalName.GestureRecognized,gesture);
     }
 
