@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://vn8tnwfdq12k"]
 
 [ext_resource type="Script" uid="uid://dtiwcbyh4243l" path="res://scenes/GestureInput.cs" id="1_vprag"]
-[ext_resource type="Script" uid="uid://npujejr402qa" path="res://resources/Gesture.cs" id="2_sg2dv"]
+[ext_resource type="Script" uid="uid://npujejr402qa" path="res://resources/gesture_library/Gesture.cs" id="2_sg2dv"]
 [ext_resource type="Resource" uid="uid://dfnp4ju3lk7vi" path="res://resources/gesture_library/Arrow.tres" id="3_bn6er"]
 [ext_resource type="Resource" uid="uid://t5ch1gk3i7hb" path="res://resources/gesture_library/Lightning.tres" id="4_foxoc"]
 [ext_resource type="Resource" uid="uid://dgpnk2nxm4db1" path="res://resources/gesture_library/T.tres" id="4_pnnw7"]

@@ -90,12 +90,12 @@ public partial class GestureInput : Control {
 
     private void RecognizeGesture() {
         Gesture candidate = new Gesture(points.ToArray());
-        string gestureClass = Recognizer.Classify(candidate);
+        (Gesture gesture, float distance) = Recognizer.Classify(candidate);
 
-        gestureLabel.Text = gestureClass;
+        gestureLabel.Text = $"{gesture.Name} {distance}";
 
         // Need to handle when a match is below threshold
-        EmitSignal(SignalName.GestureRecognized, gestureClass);
+        EmitSignal(SignalName.GestureRecognized,gesture);
     }
 
     private void SaveGesture() {
