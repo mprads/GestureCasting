@@ -14,8 +14,6 @@ public partial class Spell : Resource {
 
     public void Cast(Node3D caster, Vector3 position) {
         Owner = caster;
-        Projectile projectile = Projectile.CreateNew();
-        Owner.GetParent().AddChild(projectile);
-        projectile.GlobalPosition = position;
+        Projectile.CreateNew(caster, position);
     }
 }
