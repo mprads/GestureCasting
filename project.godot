@@ -16,6 +16,10 @@ run/main_scene="uid://jtyp3y8ur2j2"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ObjectPool="*res://globals/ObjectPool.cs"
+
 [dotnet]
 
 project/assembly_name="GestureCasting"
@@ -77,6 +81,7 @@ sprint={
 
 3d_physics/layer_1="terrain"
 3d_physics/layer_2="player"
+3d_physics/layer_3="projectile"
 
 [physics]
 

@@ -1,17 +1,25 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
+namespace Game.Autoloads;
+
 public partial class ObjectPool : Node {
-    private Dictionary<PackedScene, Stack<Node>> instances;
+    public static ObjectPool Instance { get; private set; }
+
+    private Dictionary<PackedScene, Stack<Node>> pool = new();
+
+    public override void _Ready() {
+        Instance = this;
+    }
 
     public Node RequestInstantiate(PackedScene scene) {
-        if (instances.TryGetValue(scene, out var existingInstance)) {
+        if (pool.TryGetValue(scene, out var existingInstance)) {
             Node instance = existingInstance.Pop();
             if (!existingInstance.Any()) {
-                instances.Remove(scene);
+                pool.Remove(scene);
             }
+            AddChild(instance);
             instance.RequestReady();
 
             return instance;
@@ -20,22 +28,23 @@ public partial class ObjectPool : Node {
             if (instance is IPoolable poolableInstance) {
                 poolableInstance.Prepare();
             }
-            
+            AddChild(instance);
+
             return instance;
         }
     }
 
     public void ReturnInstance(Node instance, PackedScene scene) {
         if (instance.GetParent() != null) {
-            instance.GetParent().RemoveChild(instance);
+            instance.GetParent().CallDeferred("remove_child", instance);
         }
 
-        if (instances.TryGetValue(scene, out var existingInstance)) {
+        if (pool.TryGetValue(scene, out var existingInstance)) {
             existingInstance.Append(instance);
         } else {
             Stack<Node> newStack = new();
             newStack.Push(instance);
-            instances.Add(scene, newStack);
+            pool.Add(scene, newStack);
         }
     }
 }
