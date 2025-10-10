@@ -17,10 +17,11 @@ points = PackedVector3Array(-0.12520654, -0.532801, -0.4805069, 0.022783129, 0.4
 collision_layer = 2
 script = ExtResource("1_8afob")
 
-[node name="CameraController" type="Node3D" parent="."]
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("owner")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_4kuee")
+owner = NodePath("..")
 
 [node name="PlayerCamera" type="Camera3D" parent="CameraController"]
 unique_name_in_owner = true

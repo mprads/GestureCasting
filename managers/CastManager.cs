@@ -23,7 +23,7 @@ public partial class CastManager : Node {
 
     public void Cast(Spell spell) {
         if (availableSpells.Contains(spell)) {
-            spell.Cast(owner, owner.GlobalPosition);
+            spell.Cast(owner);
         }
     }
 }

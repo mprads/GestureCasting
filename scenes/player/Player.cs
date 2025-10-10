@@ -7,7 +7,7 @@ namespace Game.Entities;
 public partial class Player : CharacterBody3D {
     public float WalkSpeed = 8.0f;
     public float WalkAcceleration = 8.0f;
-    
+
     public float SprintSpeed = 12.0f;
     public float SprintAcceleration = 5.0f;
 
@@ -68,4 +68,7 @@ public partial class Player : CharacterBody3D {
         WasOnFloor = IsOnFloor();
     }
 
+    public Transform3D GetSpellOriginTransform() {
+        return CameraController.GlobalTransform;
+    }
 }

@@ -12,8 +12,8 @@ public partial class Spell : Resource {
     public float Cooldown = 2.0f;
     public Node Owner;
 
-    public void Cast(Node3D caster, Vector3 position) {
+    public void Cast(Node3D caster) {
         Owner = caster;
-        Projectile.CreateNew(caster, position);
+        Projectile.CreateNew(caster);
     }
 }

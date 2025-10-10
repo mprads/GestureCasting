@@ -1,3 +1,4 @@
+using Game.Entities;
 using Godot;
 using System;
 
@@ -11,6 +12,9 @@ public partial class CameraController : Node3D {
     [Export]
     public float MinVerticalAngle = -Mathf.Pi / 2;
 
+    [Export]
+    private Player owner;
+
     private Camera3D playerCamera;
     private bool cameraEnabled = true;
     private Vector2 mouseInput = Vector2.Zero;
@@ -23,16 +27,16 @@ public partial class CameraController : Node3D {
     public override void _Input(InputEvent @event) {
         if (@event is InputEventMouseMotion mouseMotion) {
             if (cameraEnabled) {
-                RotateY(-mouseMotion.Relative.X * MouseSensitivity);
-                playerCamera.RotateX(-mouseMotion.Relative.Y * MouseSensitivity);
-                playerCamera.Rotation = new Vector3(
+                owner.RotateY(-mouseMotion.Relative.X * MouseSensitivity);
+                RotateX(-mouseMotion.Relative.Y * MouseSensitivity);
+                Rotation = new Vector3(
                     Mathf.Clamp(
-                        playerCamera.Rotation.X,
+                        Rotation.X,
                         MinVerticalAngle,
                         MaxVerticalAngle
                     ),
-                    playerCamera.Rotation.Y,
-                    playerCamera.Rotation.Z);
+                    Rotation.Y,
+                    Rotation.Z);
             }
         }
     }
