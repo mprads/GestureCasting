@@ -8,8 +8,18 @@ namespace Game;
 public partial class Projectile : RayCast3D, IPoolable {
     static readonly PackedScene PROJECTILE_SCENE = ResourceLoader.Load<PackedScene>("uid://c40d62btwmq5i");
 
+    private Timer lifeSpanTimer;
     private Node3D owner;
+    private RemoteTransform3D remoteTransform;
     private float speed;
+
+    public override void _Ready() {
+        lifeSpanTimer = GetNode<Timer>("%LifeSpanTimer");
+        lifeSpanTimer.Timeout += CleanUp;
+        remoteTransform = new RemoteTransform3D();
+
+        lifeSpanTimer.Start();
+    }
 
     public override void _PhysicsProcess(double delta) {
         Position += GlobalBasis * Vector3.Forward * speed * (float)delta;
@@ -20,14 +30,22 @@ public partial class Projectile : RayCast3D, IPoolable {
         if (IsColliding()) {
             if (collider != owner) {
                 GlobalPosition = GetCollisionPoint();
-                ObjectPool.Instance.ReturnInstance(this, PROJECTILE_SCENE);
                 SetPhysicsProcess(false);
+                if (collider is Node collisionNode) {
+                    collisionNode.AddChild(remoteTransform);
+                    remoteTransform.GlobalTransform = GlobalTransform;
+                    remoteTransform.RemotePath = remoteTransform.GetPathTo(this);
+                }  
             }
         }
     }
 
     public void Prepare() {
         speed = 20.0f;
+    }
+
+    private void CleanUp() {
+        ObjectPool.Instance.ReturnInstance(this, PROJECTILE_SCENE);
     }
 
     public static void CreateNew(Node3D caster) {
