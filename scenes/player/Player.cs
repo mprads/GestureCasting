@@ -69,6 +69,6 @@ public partial class Player : CharacterBody3D {
     }
 
     public Transform3D GetSpellOriginTransform() {
-        return CameraController.GlobalTransform;
+        return CameraController.GetNode<Camera3D>("%PlayerCamera").GlobalTransform;
     }
 }

@@ -20,6 +20,7 @@ public partial class PlayerStateWalk : PlayerState {
     public override void Move(double delta) {
         Vector2 inputDirection = Input.GetVector("move_left", "move_right", "move_forward", "move_backward");
         Vector3 moveDirection = (player.CameraController.GlobalBasis * new Vector3(inputDirection.X, 0.0f, inputDirection.Y)).Normalized();
+        GD.Print(moveDirection);
         Vector3 newVelocity = Vector3.Zero;
         newVelocity.Y = player.Velocity.Y;
 

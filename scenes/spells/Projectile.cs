@@ -35,6 +35,7 @@ public partial class Projectile : RayCast3D, IPoolable {
                     collisionNode.AddChild(remoteTransform);
                     remoteTransform.GlobalTransform = GlobalTransform;
                     remoteTransform.RemotePath = remoteTransform.GetPathTo(this);
+                    remoteTransform.TreeExited += CleanUp;
                 }  
             }
         }
