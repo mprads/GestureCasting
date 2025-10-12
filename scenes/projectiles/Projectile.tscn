@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://c40d62btwmq5i"]
+
+[ext_resource type="Script" uid="uid://d03tuge4elvnm" path="res://scenes/projectiles/Projectile.cs" id="1_3yvls"]
+
+[node name="Projectile" type="RayCast3D"]
+top_level = true
+target_position = Vector3(0, 0, 1)
+collision_mask = 3
+collide_with_areas = true
+script = ExtResource("1_3yvls")
+
+[node name="LifeSpanTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="TimerLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9822026, 0)
+text = "No timer"
+
+[node name="PoolLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.70447534, 0)
+text = "NA"

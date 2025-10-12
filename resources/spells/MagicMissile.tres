@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="Spell" load_steps=2 format=3 uid="uid://cj7olbdrm2th7"]
+[gd_resource type="Resource" script_class="Spell" load_steps=3 format=3 uid="uid://cj7olbdrm2th7"]
 
+[ext_resource type="PackedScene" uid="uid://d3unj7om1yytc" path="res://scenes/projectiles/Missile.tscn" id="1_140iu"]
 [ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_ho6c8"]
 
 [resource]
 script = ExtResource("1_ho6c8")
 Speed = 8.0
 ProjectileCount = 5
+ProjectileScene = ExtResource("1_140iu")
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=16 format=3 uid="uid://d0gb5yk3bkywt"]
 
 [ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
 [ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
@@ -8,8 +8,9 @@
 [ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="5_npwbq"]
 [ext_resource type="Resource" uid="uid://cj7olbdrm2th7" path="res://resources/spells/MagicMissile.tres" id="6_5stf6"]
 [ext_resource type="Resource" uid="uid://cyw0sqtchoh11" path="res://resources/spells/Arrow.tres" id="6_v42im"]
+[ext_resource type="Resource" uid="uid://cxvoyp8a656ch" path="res://resources/spells/Fireball.tres" id="7_20koh"]
 [ext_resource type="Script" uid="uid://npujejr402qa" path="res://resources/gesture_library/Gesture.cs" id="9_180ig"]
-[ext_resource type="Resource" uid="uid://sxl4awjkcfhj" path="res://resources/gesture_library/Arrow.tres" id="10_180ig"]
+[ext_resource type="Resource" uid="uid://biq2qcjvsbgv6" path="res://resources/gesture_library/Arrow.tres" id="10_180ig"]
 [ext_resource type="Resource" uid="uid://1bbvrur210tp" path="res://resources/gesture_library/MagicMissile.tres" id="11_20koh"]
 [ext_resource type="Resource" uid="uid://dmcqrkpt7m6cn" path="res://resources/gesture_library/Fireball.tres" id="12_180ig"]
 
@@ -45,7 +46,7 @@ InitialState = 1
 [node name="CastManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("4_tpg5x")
-defaultSpells = Array[ExtResource("5_npwbq")]([ExtResource("6_5stf6"), ExtResource("6_v42im")])
+defaultSpells = Array[ExtResource("5_npwbq")]([ExtResource("6_v42im"), ExtResource("7_20koh"), ExtResource("6_5stf6")])
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -83,4 +84,4 @@ text = "0.0"
 
 [node name="GestureInput" parent="GestureLayer" instance=ExtResource("4_524rm")]
 unique_name_in_owner = true
-gestureLibray = Array[ExtResource("9_180ig")]([ExtResource("10_180ig"), ExtResource("11_20koh"), ExtResource("12_180ig")])
+gestureLibray = Array[ExtResource("9_180ig")]([ExtResource("12_180ig"), ExtResource("11_20koh"), ExtResource("10_180ig")])

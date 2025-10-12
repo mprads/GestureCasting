@@ -7,12 +7,11 @@ namespace Game;
 
 [GlobalClass]
 public partial class Projectile : RayCast3D, IPoolable {
-    static readonly PackedScene PROJECTILE_SCENE = ResourceLoader.Load<PackedScene>("uid://c40d62btwmq5i");
-
     private Timer lifeSpanTimer;
     private Label3D timerLabel;
     private Label3D poolLabel;
     private Node3D owner;
+    private PackedScene scene;
     private RemoteTransform3D remoteTransform;
     private float speed;
     private float damage;
@@ -68,12 +67,13 @@ public partial class Projectile : RayCast3D, IPoolable {
         previousTransform.QueueFree();
 
         lifeSpanTimer.Stop();
-        ObjectPool.Instance.ReturnInstance(this, PROJECTILE_SCENE);
+        ObjectPool.Instance.ReturnInstance(this, scene);
     }
 
-    public static void CreateNew(Node3D caster) {
-        Projectile newProjectile = (Projectile)ObjectPool.Instance.RequestInstantiate(PROJECTILE_SCENE);
+    public static void CreateNew(Node3D caster, PackedScene projectileScene) {
+        Projectile newProjectile = (Projectile)ObjectPool.Instance.RequestInstantiate(projectileScene);
         newProjectile.owner = caster;
+        newProjectile.scene = projectileScene;
         if (caster is Player player) {
             newProjectile.GlobalTransform = player.GetSpellOriginTransform();
         } else {
