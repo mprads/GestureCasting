@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=2 format=3 uid="uid://cxvoyp8a656ch"]
+
+[ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_0xp33"]
+
+[resource]
+script = ExtResource("1_0xp33")
+MaxDuration = 10.0
+Speed = 10.0
+CastDelay = 0.2
+metadata/_custom_type_script = "uid://ckmaspmduyyqe"

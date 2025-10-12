@@ -24,6 +24,18 @@ ObjectPool="*res://globals/ObjectPool.cs"
 
 project/assembly_name="GestureCasting"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "purple",
+"res://components/": "orange",
+"res://globals/": "gray",
+"res://managers/": "yellow",
+"res://resources/": "red",
+"res://scenes/": "green",
+"res://scripts/": "blue"
+}
+
 [input]
 
 toggle_mouse_mode={

@@ -15,6 +15,7 @@ public partial class Projectile : RayCast3D, IPoolable {
     private Node3D owner;
     private RemoteTransform3D remoteTransform;
     private float speed;
+    private float damage;
 
     public override void _Process(double delta) {
         timerLabel.Text = $"{Math.Round(lifeSpanTimer.TimeLeft, 2)}";

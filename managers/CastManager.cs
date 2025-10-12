@@ -1,9 +1,8 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using Game.Resources.Spells;
-using System.Linq;
 using Game.Entities;
+using System.Threading.Tasks;
 
 public partial class CastManager : Node {
 
@@ -21,9 +20,9 @@ public partial class CastManager : Node {
         }
     }
 
-    public void Cast(Spell spell) {
+    public async Task Cast(Spell spell) {
         if (availableSpells.Contains(spell)) {
-            spell.Cast(owner);
+            await spell.Cast(owner);
         }
     }
 }
