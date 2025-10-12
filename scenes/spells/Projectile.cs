@@ -1,6 +1,7 @@
 using Godot;
 using Game.Autoloads;
 using Game.Entities;
+using System;
 
 namespace Game;
 
@@ -9,16 +10,14 @@ public partial class Projectile : RayCast3D, IPoolable {
     static readonly PackedScene PROJECTILE_SCENE = ResourceLoader.Load<PackedScene>("uid://c40d62btwmq5i");
 
     private Timer lifeSpanTimer;
+    private Label3D timerLabel;
+    private Label3D poolLabel;
     private Node3D owner;
     private RemoteTransform3D remoteTransform;
     private float speed;
 
-    public override void _Ready() {
-        lifeSpanTimer = GetNode<Timer>("%LifeSpanTimer");
-        lifeSpanTimer.Timeout += CleanUp;
-        remoteTransform = new RemoteTransform3D();
-
-        lifeSpanTimer.Start();
+    public override void _Process(double delta) {
+        timerLabel.Text = $"{Math.Round(lifeSpanTimer.TimeLeft, 2)}";
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -35,17 +34,39 @@ public partial class Projectile : RayCast3D, IPoolable {
                     collisionNode.AddChild(remoteTransform);
                     remoteTransform.GlobalTransform = GlobalTransform;
                     remoteTransform.RemotePath = remoteTransform.GetPathTo(this);
-                    remoteTransform.TreeExited += CleanUp;
                 }  
             }
         }
     }
 
-    public void Prepare() {
+    public void SetUp() {
+        lifeSpanTimer = GetNode<Timer>("%LifeSpanTimer");
+        timerLabel = GetNode<Label3D>("%TimerLabel");
+        poolLabel = GetNode<Label3D>("%PoolLabel");
+
+        lifeSpanTimer.Timeout += CleanUp;
+        remoteTransform = new();
+
         speed = 20.0f;
     }
 
+    public void Prepare() {
+        SetPhysicsProcess(true);
+        remoteTransform = new();
+        lifeSpanTimer.Start();
+    }
+
+    // DEBUG delete later
+    public void SetPoolLabel(string fromPool) {
+        poolLabel.Text = $"{fromPool}";
+    }
+
     private void CleanUp() {
+        RemoteTransform3D previousTransform = remoteTransform;
+        remoteTransform = new();
+        previousTransform.QueueFree();
+
+        lifeSpanTimer.Stop();
         ObjectPool.Instance.ReturnInstance(this, PROJECTILE_SCENE);
     }
 

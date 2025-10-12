@@ -14,21 +14,25 @@ public partial class ObjectPool : Node {
     }
 
     public Node RequestInstantiate(PackedScene scene) {
-        if (pool.TryGetValue(scene, out var existingInstance)) {
-            Node instance = existingInstance.Pop();
-            if (!existingInstance.Any()) {
+        if (pool.TryGetValue(scene, out var existingGroup)) {
+            Node instance = existingGroup.Pop();
+            if (!existingGroup.Any()) {
                 pool.Remove(scene);
             }
             AddChild(instance);
-            instance.RequestReady();
+            if (instance is IPoolable poolableInstance) {
+                poolableInstance.Prepare();
+                poolableInstance.SetPoolLabel("from pool");
+            }
 
             return instance;
         } else {
             Node instance = scene.Instantiate();
-            if (instance is IPoolable poolableInstance) {
-                poolableInstance.Prepare();
-            }
             AddChild(instance);
+            if (instance is IPoolable poolableInstance) {
+                poolableInstance.SetUp();
+                poolableInstance.SetPoolLabel("new instance");
+            }
 
             return instance;
         }
@@ -39,8 +43,8 @@ public partial class ObjectPool : Node {
             instance.GetParent().CallDeferred("remove_child", instance);
         }
 
-        if (pool.TryGetValue(scene, out var existingInstance)) {
-            existingInstance.Append(instance);
+        if (pool.TryGetValue(scene, out var existingGroup)) {
+            existingGroup.Push(instance);
         } else {
             Stack<Node> newStack = new();
             newStack.Push(instance);

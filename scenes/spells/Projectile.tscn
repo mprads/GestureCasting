@@ -23,3 +23,13 @@ unique_name_in_owner = true
 wait_time = 5.0
 one_shot = true
 autostart = true
+
+[node name="TimerLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61647063, 0)
+text = "No timer"
+
+[node name="PoolLabel" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3387434, 0)
+text = "NA"
