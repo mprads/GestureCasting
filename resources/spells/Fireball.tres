@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="Spell" load_steps=3 format=3 uid="uid://cxvoyp8a656ch"]
+[gd_resource type="Resource" script_class="Spell" load_steps=5 format=3 uid="uid://cxvoyp8a656ch"]
 
 [ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_0xp33"]
-[ext_resource type="PackedScene" uid="uid://ceilmjqe1bcl1" path="res://scenes/projectiles/Fireball.tscn" id="1_r5vj4"]
+[ext_resource type="Script" uid="uid://cks0mtwj4xan8" path="res://resources/projectile_behaviour/DefaultBehaviour.cs" id="1_1gbqy"]
+[ext_resource type="PackedScene" uid="uid://ceilmjqe1bcl1" path="res://scenes/game_objects/projectiles/Fireball.tscn" id="1_r5vj4"]
+
+[sub_resource type="Resource" id="Resource_8hg1u"]
+script = ExtResource("1_1gbqy")
+metadata/_custom_type_script = "uid://cks0mtwj4xan8"
 
 [resource]
 script = ExtResource("1_0xp33")
-MaxDuration = 10.0
-Speed = 10.0
+projectileScene = ExtResource("1_r5vj4")
+projectileBehaviour = SubResource("Resource_8hg1u")
 CastDelay = 0.2
-ProjectileScene = ExtResource("1_r5vj4")
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"

@@ -1,11 +1,16 @@
-[gd_resource type="Resource" script_class="Spell" load_steps=3 format=3 uid="uid://cj7olbdrm2th7"]
+[gd_resource type="Resource" script_class="Spell" load_steps=5 format=3 uid="uid://cj7olbdrm2th7"]
 
-[ext_resource type="PackedScene" uid="uid://d3unj7om1yytc" path="res://scenes/projectiles/Missile.tscn" id="1_140iu"]
+[ext_resource type="PackedScene" uid="uid://d3unj7om1yytc" path="res://scenes/game_objects/projectiles/Missile.tscn" id="1_140iu"]
 [ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_ho6c8"]
+[ext_resource type="Script" uid="uid://cks0mtwj4xan8" path="res://resources/projectile_behaviour/DefaultBehaviour.cs" id="1_o7se0"]
+
+[sub_resource type="Resource" id="Resource_ly6es"]
+script = ExtResource("1_o7se0")
+metadata/_custom_type_script = "uid://cks0mtwj4xan8"
 
 [resource]
 script = ExtResource("1_ho6c8")
-Speed = 8.0
+projectileScene = ExtResource("1_140iu")
+projectileBehaviour = SubResource("Resource_ly6es")
 ProjectileCount = 5
-ProjectileScene = ExtResource("1_140iu")
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"
