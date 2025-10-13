@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://d0gb5yk3bkywt"]
 
-[ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
-[ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
+[ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/game_objects/entities/player/Player.cs" id="1_8afob"]
+[ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/game_objects/entities/player/CameraController.cs" id="2_4kuee"]
 [ext_resource type="Script" uid="uid://cfmkbysol5w80" path="res://scripts/state_machines/PlayerStateMachine.cs" id="2_gfjak"]
 [ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="4_524rm"]
 [ext_resource type="Script" uid="uid://bcw6btkbvdual" path="res://managers/CastManager.cs" id="4_tpg5x"]

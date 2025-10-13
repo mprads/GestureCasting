@@ -2,28 +2,30 @@ using Godot;
 using Game.Autoloads;
 using Game.Entities;
 using System;
+using Game.Resources;
 
-namespace Game;
+namespace Game.GameObjects.Projectile;
 
 [GlobalClass]
 public partial class Projectile : RayCast3D, IPoolable {
+    public float InitialSpeed;
+    public float MaxSpeed;
+    public float CurrentSpeed;
+    private ProjectileBehaviour behaviour;
     private Timer lifeSpanTimer;
     private Label3D timerLabel;
     private Label3D poolLabel;
     private Node3D owner;
     private PackedScene scene;
     private RemoteTransform3D remoteTransform;
-    private float speed;
-    private float damage;
+    
 
     public override void _Process(double delta) {
         timerLabel.Text = $"{Math.Round(lifeSpanTimer.TimeLeft, 2)}";
     }
 
     public override void _PhysicsProcess(double delta) {
-        Position += GlobalBasis * Vector3.Forward * speed * (float)delta;
-        TargetPosition = Vector3.Forward * speed * (float)delta;
-        ForceRaycastUpdate();
+        behaviour.Move(this, delta);
         GodotObject collider = GetCollider();
 
         if (IsColliding()) {
@@ -47,7 +49,9 @@ public partial class Projectile : RayCast3D, IPoolable {
         lifeSpanTimer.Timeout += CleanUp;
         remoteTransform = new();
 
-        speed = 20.0f;
+        InitialSpeed = 50.0f;
+        MaxSpeed = 500.0f;
+        CurrentSpeed = InitialSpeed;
     }
 
     public void Prepare() {
@@ -70,10 +74,11 @@ public partial class Projectile : RayCast3D, IPoolable {
         ObjectPool.Instance.ReturnInstance(this, scene);
     }
 
-    public static void CreateNew(Node3D caster, PackedScene projectileScene) {
+    public static void CreateNew(Node3D caster, PackedScene projectileScene, ProjectileBehaviour projectileBehaviour) {
         Projectile newProjectile = (Projectile)ObjectPool.Instance.RequestInstantiate(projectileScene);
         newProjectile.owner = caster;
         newProjectile.scene = projectileScene;
+        newProjectile.behaviour = projectileBehaviour;
         if (caster is Player player) {
             newProjectile.GlobalTransform = player.GetSpellOriginTransform();
         } else {

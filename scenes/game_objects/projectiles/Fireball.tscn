@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ceilmjqe1bcl1"]
 
-[ext_resource type="PackedScene" uid="uid://c40d62btwmq5i" path="res://scenes/projectiles/Projectile.tscn" id="1_y85qv"]
+[ext_resource type="PackedScene" uid="uid://c40d62btwmq5i" path="res://scenes/game_objects/projectiles/Projectile.tscn" id="1_y85qv"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_oivon"]
 
