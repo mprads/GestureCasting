@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using Game.Resources;
 
 namespace Game.States;

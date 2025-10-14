@@ -1,4 +1,3 @@
-using Game.Entities;
 using Godot;
 
 namespace Game.States;

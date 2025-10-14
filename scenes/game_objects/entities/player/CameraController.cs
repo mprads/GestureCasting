@@ -1,6 +1,5 @@
 using Game.Entities;
 using Godot;
-using System;
 
 namespace Game.Camera;
 
