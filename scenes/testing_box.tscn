@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmsar5lv276up"]
+[gd_scene load_steps=6 format=3 uid="uid://cmsar5lv276up"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kfuv1"]
 
 [sub_resource type="Animation" id="Animation_ebday"]
 length = 0.001
@@ -70,10 +72,14 @@ _data = {
 }
 point_count = 2
 
-[node name="TestingBox" type="Node3D"]
+[node name="TestingBox" type="StaticBody3D" groups=["target_dummy"]]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_kfuv1")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(0.009202188, 0, -0.9999577, 0, 1, 0, 0.9999577, 0, 0.009202188, 0, 0, 0.030562583)
+transform = Transform3D(0.15648817, 0, -0.98767984, 0, 1, 0, 0.98767984, 0, 0.15648817, 0.18701649, 0, 0.028841557)
 use_collision = true
 collision_mask = 0
 

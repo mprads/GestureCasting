@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using Game.Resources;
 using Godot;
 
-namespace Game;
+namespace Game.Components;
 
 public partial class QPointCloudRecognizer : Node {
     const string GESTURE_LIBRARY_PATH = "res://resources/gesture_library/";

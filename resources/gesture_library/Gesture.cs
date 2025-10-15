@@ -1,4 +1,5 @@
 using Game.Resources.Spells;
+using Game.Components;
 using Godot;
 
 namespace Game.Resources;

@@ -9,7 +9,7 @@
 [node name="TestMap" parent="." instance=ExtResource("2_sugp2")]
 
 [node name="Player" parent="." instance=ExtResource("3_0bbpv")]
-transform = Transform3D(-0.03880639, 0, 0.9992468, 0, 1, 0, -0.9992468, 0, -0.03880639, 16.809351, 2.967731, 0)
+transform = Transform3D(-0.03880639, 0, 0.9992468, 0, 1, 0, -0.9992468, 0, -0.03880639, 43.44051, 2.967733, 4.060383)
 
 [node name="TestingBox" parent="." instance=ExtResource("3_rarhs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.9906645, 4.3700466, 3.1496649)

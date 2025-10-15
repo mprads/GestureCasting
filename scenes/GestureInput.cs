@@ -1,4 +1,5 @@
 using Game.Resources;
+using Game.Components;
 using Godot;
 using System.Collections.Generic;
 

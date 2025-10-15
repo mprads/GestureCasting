@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=17 format=3 uid="uid://d0gb5yk3bkywt"]
 
 [ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/game_objects/entities/player/Player.cs" id="1_8afob"]
 [ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/game_objects/entities/player/CameraController.cs" id="2_4kuee"]
@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://biq2qcjvsbgv6" path="res://resources/gesture_library/Arrow.tres" id="10_180ig"]
 [ext_resource type="Resource" uid="uid://1bbvrur210tp" path="res://resources/gesture_library/MagicMissile.tres" id="11_20koh"]
 [ext_resource type="Resource" uid="uid://dmcqrkpt7m6cn" path="res://resources/gesture_library/Fireball.tres" id="12_180ig"]
+[ext_resource type="PackedScene" uid="uid://ch7psd0xb7wev" path="res://components/LineOfSiteComponent.tscn" id="14_gtwq2"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gmlin"]
 
@@ -31,6 +32,9 @@ owner = NodePath("..")
 
 [node name="PlayerCamera" type="Camera3D" parent="CameraController"]
 unique_name_in_owner = true
+
+[node name="LineOfSiteArea" parent="CameraController/PlayerCamera" instance=ExtResource("14_gtwq2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09831619, 0.0855577, -17.108414)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_gmlin")
