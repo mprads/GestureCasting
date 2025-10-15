@@ -4,30 +4,28 @@ using Godot;
 
 namespace Game.Components;
 
-public partial class LineOfSiteComponent : Area3D {
-    private RayCast3D lineOfSiteRayCast;
-    private Timer lineOfSiteTimer;
+public partial class LineOfSightComponent : Area3D {
+    private RayCast3D lineOfSightRayCast;
+    private Timer lineOfSightTimer;
     public override void _Ready() {
-        lineOfSiteRayCast = GetNode<RayCast3D>("%LineOfSiteRayCast");
-        lineOfSiteTimer = GetNode<Timer>("%LineOfSiteTimer");
+        lineOfSightRayCast = GetNode<RayCast3D>("%LineOfSightRayCast");
+        lineOfSightTimer = GetNode<Timer>("%LineOfSightTimer");
 
-        lineOfSiteTimer.Timeout += OnLineOfSiteTimerTimeout;
+        lineOfSightTimer.Timeout += OnLineOfSightTimerTimeout;
     }
 
-    private void OnLineOfSiteTimerTimeout() {
+    private void OnLineOfSightTimerTimeout() {
         Godot.Collections.Array<Node3D> overlaps = GetOverlappingBodies();
         if (overlaps.Any()) {
-            GD.Print($"{overlaps.Count()}");
             foreach (Node3D overlap in overlaps) {
                 // TODO dislike using groups change to player or entity class
                 if (overlap.IsInGroup("target_dummy")) {
-                    GD.Print("dummy in range");
                     Vector3 targetPosition = overlap.GlobalTransform.Origin;
-                    lineOfSiteRayCast.LookAt(targetPosition, Vector3.Up);
-                    lineOfSiteRayCast.ForceRaycastUpdate();
+                    lineOfSightRayCast.LookAt(targetPosition, Vector3.Up);
+                    lineOfSightRayCast.ForceRaycastUpdate();
 
-                    if (lineOfSiteRayCast.IsColliding()) {
-                        GodotObject collider = lineOfSiteRayCast.GetCollider();
+                    if (lineOfSightRayCast.IsColliding()) {
+                        GodotObject collider = lineOfSightRayCast.GetCollider();
 
                         // TODO add ownership, only for target dummy testing
                         if (collider is not Player) {
