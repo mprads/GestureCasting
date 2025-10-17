@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TrackingBehaviour" load_steps=2 format=3 uid="uid://c75neworcmcp"]
+
+[ext_resource type="Script" uid="uid://csa4ci1y47pq4" path="res://resources/projectile_behaviour/TrackingBehaviour.cs" id="1_ngp6w"]
+
+[resource]
+script = ExtResource("1_ngp6w")
+metadata/_custom_type_script = "uid://csa4ci1y47pq4"

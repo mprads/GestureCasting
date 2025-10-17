@@ -7,11 +7,19 @@ namespace Game.Components;
 public partial class LineOfSightComponent : Area3D {
     private RayCast3D lineOfSightRayCast;
     private Timer lineOfSightTimer;
+    private GodotObject target;
+
     public override void _Ready() {
         lineOfSightRayCast = GetNode<RayCast3D>("%LineOfSightRayCast");
         lineOfSightTimer = GetNode<Timer>("%LineOfSightTimer");
 
         lineOfSightTimer.Timeout += OnLineOfSightTimerTimeout;
+    }
+
+    public Node3D GetTarget() {
+        // Todo probably need to do some check to make sure the target is another player
+        // or some sort of valid target
+        return (Node3D)target;
     }
 
     private void OnLineOfSightTimerTimeout() {
@@ -30,6 +38,7 @@ public partial class LineOfSightComponent : Area3D {
                         // TODO add ownership, only for target dummy testing
                         if (collider is not Player) {
                             if (collider == overlap) {
+                                target = collider;
                                  GD.Print("dummy line of sight");
                             }
                         }

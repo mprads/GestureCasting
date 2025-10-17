@@ -33,7 +33,8 @@ owner = NodePath("..")
 [node name="PlayerCamera" type="Camera3D" parent="CameraController"]
 unique_name_in_owner = true
 
-[node name="LineOfSightArea" parent="CameraController/PlayerCamera" instance=ExtResource("14_gtwq2")]
+[node name="LineOfSightComponent" parent="CameraController/PlayerCamera" instance=ExtResource("14_gtwq2")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.349325)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

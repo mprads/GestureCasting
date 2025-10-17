@@ -26,6 +26,8 @@ public partial class Spell : Resource {
 
     public async Task Cast(Node3D caster) {
         Owner = caster;
+        projectileBehaviour.Owner = caster;
+
         for (int i = 0; i < ProjectileCount; i++) {
             await ToSignal(caster.GetTree().CreateTimer(CastDelay), "timeout");
             Projectile.CreateNew(caster, projectileScene, projectileBehaviour);
