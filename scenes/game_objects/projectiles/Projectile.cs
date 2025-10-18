@@ -13,6 +13,7 @@ public partial class Projectile : RayCast3D, IPoolable {
     public float CurrentSpeed;
     private ProjectileBehaviour behaviour;
     private Timer lifeSpanTimer;
+    private Timer trackingCooldownTimer;
     private Label3D timerLabel;
     private Label3D poolLabel;
     private Node3D owner;
@@ -43,6 +44,7 @@ public partial class Projectile : RayCast3D, IPoolable {
 
     public void SetUp() {
         lifeSpanTimer = GetNode<Timer>("%LifeSpanTimer");
+        trackingCooldownTimer = GetNode<Timer>("%TrackingCooldownTimer");
         timerLabel = GetNode<Label3D>("%TimerLabel");
         poolLabel = GetNode<Label3D>("%PoolLabel");
 
