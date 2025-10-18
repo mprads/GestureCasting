@@ -8,16 +8,11 @@ namespace Game.Resources.ProjectileBehaviours;
 [GlobalClass]
 public partial class TrackingBehaviour : ProjectileBehaviour {
     public override void Move(Projectile projectile, double delta) {
-        if (Owner.GetNode<LineOfSightComponent>("%LineOfSightComponent") != null) {
-            Node3D target = Owner.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
-            if (target != null) {
-               TrackingMove(projectile, target, delta);
-            } else {
-                 DefaultMove(projectile, delta);
-            }
+        if (projectile.Target != null) {
+            TrackingMove(projectile, projectile.Target, delta);
         } else {
             DefaultMove(projectile, delta);
-        }   
+        }
     }
 
     private void DefaultMove(Projectile projectile, double delta) {

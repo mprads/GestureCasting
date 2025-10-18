@@ -1,8 +1,9 @@
 using Godot;
+using System;
 using Game.Autoloads;
 using Game.Entities;
-using System;
 using Game.Resources;
+using Game.Components;
 
 namespace Game.GameObjects.Projectile;
 
@@ -11,6 +12,7 @@ public partial class Projectile : RayCast3D, IPoolable {
     public float InitialSpeed;
     public float MaxSpeed;
     public float CurrentSpeed;
+    public Node3D Target;
     private ProjectileBehaviour behaviour;
     private Timer lifeSpanTimer;
     private Timer trackingCooldownTimer;
@@ -79,6 +81,11 @@ public partial class Projectile : RayCast3D, IPoolable {
     public static void CreateNew(Node3D caster, PackedScene projectileScene, ProjectileBehaviour projectileBehaviour) {
         Projectile newProjectile = (Projectile)ObjectPool.Instance.RequestInstantiate(projectileScene);
         newProjectile.owner = caster;
+        if (caster.GetNode<LineOfSightComponent>("%LineOfSightComponent") != null) {
+            newProjectile.Target = caster.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
+        } else {
+            newProjectile.Target = null;
+        }
         newProjectile.scene = projectileScene;
         newProjectile.behaviour = projectileBehaviour;
         if (caster is Player player) {
