@@ -13,7 +13,7 @@ public partial class ObjectPool : Node {
         Instance = this;
     }
 
-    public Node RequestInstantiate(PackedScene scene) {
+    public (Node, bool) RequestInstantiate(PackedScene scene) {
         if (pool.TryGetValue(scene, out var existingGroup)) {
             Node instance = existingGroup.Pop();
             if (!existingGroup.Any()) {
@@ -25,7 +25,7 @@ public partial class ObjectPool : Node {
                 poolableInstance.SetPoolLabel("from pool");
             }
 
-            return instance;
+            return (instance, true);
         } else {
             Node instance = scene.Instantiate();
             AddChild(instance);
@@ -34,7 +34,7 @@ public partial class ObjectPool : Node {
                 poolableInstance.SetPoolLabel("new instance");
             }
 
-            return instance;
+            return (instance, false);
         }
     }
 

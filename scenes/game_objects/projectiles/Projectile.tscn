@@ -22,10 +22,10 @@ autostart = true
 
 [node name="TimerLabel" type="Label3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9822026, 0.47897506)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1930938, 0.47897506)
 text = "No timer"
 
 [node name="PoolLabel" type="Label3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.70447534, 0.47897506)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9264124, 0.47897506)
 text = "NA"

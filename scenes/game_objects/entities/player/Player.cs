@@ -1,5 +1,6 @@
 using System;
 using Game.Camera;
+using Game.Components;
 using Godot;
 
 namespace Game.Entities;
@@ -38,9 +39,11 @@ public partial class Player : CharacterBody3D {
 
     private PlayerStateMachine playerStateMachine;
 
+    // DEBUG lables
     private Label stateLabel;
     private Label velocityLabel;
     private Label horizontalVelocityLabel;
+    private Label targetLabel;
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
@@ -52,6 +55,8 @@ public partial class Player : CharacterBody3D {
         stateLabel = GetNode<Label>("%StateLabel");
         velocityLabel = GetNode<Label>("%VelocityLabel");
         horizontalVelocityLabel = GetNode<Label>("%HorizontalVelocityLabel");
+        targetLabel = GetNode<Label>("%TargetLabel");
+
         playerStateMachine.Init(this);
         CastManager.Init(this);
     }
@@ -60,6 +65,7 @@ public partial class Player : CharacterBody3D {
         stateLabel.Text = playerStateMachine.GetCurrentStateName();
         velocityLabel.Text = Velocity.ToString();
         horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
+        targetLabel.Text = GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget() != null ? "Has Target" : "No Target";
     }
 
     public override void _PhysicsProcess(double delta) {

@@ -23,7 +23,6 @@ public partial class LineOfSightComponent : Area3D {
     }
 
     private void OnLineOfSightTimerTimeout() {
-        target = null;
         Godot.Collections.Array<Node3D> overlaps = GetOverlappingBodies();
         if (overlaps.Any()) {
             foreach (Node3D overlap in overlaps) {
@@ -40,7 +39,6 @@ public partial class LineOfSightComponent : Area3D {
                         if (collider is not Player) {
                             if (collider == overlap) {
                                 target = collider;
-                                GD.Print("dummy line of sight");
                                 return;
                             }
                         }
@@ -48,6 +46,8 @@ public partial class LineOfSightComponent : Area3D {
                 }
             }
         }
+
+        target = null;
     }
 
 }

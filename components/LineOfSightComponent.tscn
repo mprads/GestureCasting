@@ -31,4 +31,3 @@ autostart = true
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.658825)
 target_position = Vector3(0, 0, -60)
-debug_shape_custom_color = Color(0.64705884, 0, 0, 1)

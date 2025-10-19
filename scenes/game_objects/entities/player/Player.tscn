@@ -85,6 +85,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "0.0"
 
+[node name="TargetLabel" type="Label" parent="DebugLayer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No target"
+
 [node name="GestureLayer" type="CanvasLayer" parent="."]
 
 [node name="GestureInput" parent="GestureLayer" instance=ExtResource("4_524rm")]

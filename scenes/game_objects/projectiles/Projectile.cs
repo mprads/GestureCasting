@@ -28,7 +28,10 @@ public partial class Projectile : RayCast3D, IPoolable {
     }
 
     public override void _PhysicsProcess(double delta) {
-        behaviour.Move(this, delta);
+        if (behaviour != null) {
+            behaviour.Move(this, delta);
+        }
+
         GodotObject collider = GetCollider();
 
         if (IsColliding()) {
@@ -73,25 +76,35 @@ public partial class Projectile : RayCast3D, IPoolable {
         RemoteTransform3D previousTransform = remoteTransform;
         remoteTransform = new();
         previousTransform.QueueFree();
+        owner = null;
+        behaviour = null;
 
         lifeSpanTimer.Stop();
         ObjectPool.Instance.ReturnInstance(this, scene);
     }
 
     public static void CreateNew(Node3D caster, PackedScene projectileScene, ProjectileBehaviour projectileBehaviour) {
-        Projectile newProjectile = (Projectile)ObjectPool.Instance.RequestInstantiate(projectileScene);
-        newProjectile.owner = caster;
-        if (caster.GetNode<LineOfSightComponent>("%LineOfSightComponent") != null) {
-            newProjectile.Target = caster.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
-        } else {
-            newProjectile.Target = null;
+        (Node newProjectile, bool fromPool) = ObjectPool.Instance.RequestInstantiate(projectileScene);
+        Projectile castedProjectile = (Projectile)newProjectile;
+
+        if (!fromPool) {
+            castedProjectile.scene = projectileScene;
         }
-        newProjectile.scene = projectileScene;
-        newProjectile.behaviour = projectileBehaviour;
+
+        castedProjectile.behaviour = projectileBehaviour;
+        castedProjectile.owner = caster;
+
         if (caster is Player player) {
-            newProjectile.GlobalTransform = player.GetSpellOriginTransform();
+            castedProjectile.GlobalTransform = player.GetSpellOriginTransform();
         } else {
-            newProjectile.GlobalTransform = caster.GlobalTransform;
+            castedProjectile.GlobalTransform = caster.GlobalTransform;
+        }
+
+        if (caster.GetNode<LineOfSightComponent>("%LineOfSightComponent") != null) {
+            castedProjectile.Target = caster.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
+        } else {
+            castedProjectile.Target = null;
+
         }
     }
 }
