@@ -1,9 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://d0gb5yk3bkywt"]
+[gd_scene load_steps=17 format=3 uid="uid://d0gb5yk3bkywt"]
 
-[ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/player/Player.cs" id="1_8afob"]
-[ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/player/CameraController.cs" id="2_4kuee"]
+[ext_resource type="Script" uid="uid://d1hkr201pauma" path="res://scenes/game_objects/entities/player/Player.cs" id="1_8afob"]
+[ext_resource type="Script" uid="uid://oxgsdiah5860" path="res://scenes/game_objects/entities/player/CameraController.cs" id="2_4kuee"]
 [ext_resource type="Script" uid="uid://cfmkbysol5w80" path="res://scripts/state_machines/PlayerStateMachine.cs" id="2_gfjak"]
 [ext_resource type="PackedScene" uid="uid://vn8tnwfdq12k" path="res://scenes/GestureInput.tscn" id="4_524rm"]
+[ext_resource type="Script" uid="uid://bcw6btkbvdual" path="res://managers/CastManager.cs" id="4_tpg5x"]
+[ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="5_npwbq"]
+[ext_resource type="Resource" uid="uid://cj7olbdrm2th7" path="res://resources/spells/MagicMissile.tres" id="6_5stf6"]
+[ext_resource type="Resource" uid="uid://cyw0sqtchoh11" path="res://resources/spells/Arrow.tres" id="6_v42im"]
+[ext_resource type="Resource" uid="uid://cxvoyp8a656ch" path="res://resources/spells/Fireball.tres" id="7_20koh"]
+[ext_resource type="Script" uid="uid://npujejr402qa" path="res://resources/gesture_library/Gesture.cs" id="9_180ig"]
+[ext_resource type="Resource" uid="uid://biq2qcjvsbgv6" path="res://resources/gesture_library/Arrow.tres" id="10_180ig"]
+[ext_resource type="Resource" uid="uid://1bbvrur210tp" path="res://resources/gesture_library/MagicMissile.tres" id="11_20koh"]
+[ext_resource type="Resource" uid="uid://dmcqrkpt7m6cn" path="res://resources/gesture_library/Fireball.tres" id="12_180ig"]
+[ext_resource type="PackedScene" uid="uid://ch7psd0xb7wev" path="res://components/LineOfSightComponent.tscn" id="14_gtwq2"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gmlin"]
 
@@ -14,13 +24,18 @@ points = PackedVector3Array(-0.12520654, -0.532801, -0.4805069, 0.022783129, 0.4
 collision_layer = 2
 script = ExtResource("1_8afob")
 
-[node name="CameraController" type="Node3D" parent="."]
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("owner")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_4kuee")
+owner = NodePath("..")
 
 [node name="PlayerCamera" type="Camera3D" parent="CameraController"]
 unique_name_in_owner = true
+
+[node name="LineOfSightComponent" parent="CameraController/PlayerCamera" instance=ExtResource("14_gtwq2")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -17.349325)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_gmlin")
@@ -32,6 +47,11 @@ shape = SubResource("ConvexPolygonShape3D_8afob")
 unique_name_in_owner = true
 script = ExtResource("2_gfjak")
 InitialState = 1
+
+[node name="CastManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_tpg5x")
+defaultSpells = Array[ExtResource("5_npwbq")]([ExtResource("6_v42im"), ExtResource("7_20koh"), ExtResource("6_5stf6")])
 
 [node name="CoyoteTimer" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -65,7 +85,13 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "0.0"
 
+[node name="TargetLabel" type="Label" parent="DebugLayer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "No target"
+
 [node name="GestureLayer" type="CanvasLayer" parent="."]
 
 [node name="GestureInput" parent="GestureLayer" instance=ExtResource("4_524rm")]
 unique_name_in_owner = true
+gestureLibray = Array[ExtResource("9_180ig")]([ExtResource("12_180ig"), ExtResource("11_20koh"), ExtResource("10_180ig")])

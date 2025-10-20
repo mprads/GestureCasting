@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using Game.Resources;
 using Godot;
 
-namespace Game;
+namespace Game.Components;
 
 public partial class QPointCloudRecognizer : Node {
     const string GESTURE_LIBRARY_PATH = "res://resources/gesture_library/";
@@ -53,22 +53,24 @@ public partial class QPointCloudRecognizer : Node {
         }
     }
 
-    public string Classify(Gesture candidate) {
+    public (Gesture gesture, float distance) Classify(Gesture candidate) {
         float minDistance = float.MaxValue;
-        string gestureClass = "";
+        Gesture matchedGesture = new();
         foreach (Gesture template in GestureSet) {
             float dist = GreedyCloudMatch(candidate, template, minDistance);
             if (dist < minDistance) {
                 minDistance = dist;
-                gestureClass = $"{template.Name} ({dist})";
+                matchedGesture = template;
             }
         }
 
         if (minDistance > MatchThreshold) {
-            gestureClass = $"Match below threshold ({minDistance})";
+            Gesture belowThreshold = new Gesture();
+            belowThreshold.Name = $"Match below threshold";
+            matchedGesture = belowThreshold;
         }
 
-        return gestureClass;
+        return (matchedGesture, minDistance);
     }
 
     private float GreedyCloudMatch(Gesture gesture1, Gesture gesture2, float minSoFar) {

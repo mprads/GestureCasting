@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AccelerateBehaviour" load_steps=2 format=3 uid="uid://pbvpkx4evbr1"]
+
+[ext_resource type="Script" uid="uid://dfqd65j68s1k1" path="res://resources/projectile_behaviour/AccelerateBehaviour.cs" id="1_noxbx"]
+
+[resource]
+script = ExtResource("1_noxbx")
+metadata/_custom_type_script = "uid://dfqd65j68s1k1"

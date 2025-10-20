@@ -1,3 +1,5 @@
+using Game.Resources.Spells;
+using Game.Components;
 using Godot;
 
 namespace Game.Resources;
@@ -5,8 +7,9 @@ namespace Game.Resources;
 [GlobalClass]
 public partial class Gesture : Resource {
     [Export]
-    public string Name = "";
-
+    public string Name;
+    [Export]
+    public Spell Spell;
     [Export]
     public Point[] Points, PointsRaw = [];
 

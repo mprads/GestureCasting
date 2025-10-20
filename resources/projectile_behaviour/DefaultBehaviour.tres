@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DefaultBehaviour" load_steps=2 format=3 uid="uid://b4jjmhd0p8xtt"]
+
+[ext_resource type="Script" uid="uid://cks0mtwj4xan8" path="res://resources/projectile_behaviour/DefaultBehaviour.cs" id="1_p2tlk"]
+
+[resource]
+script = ExtResource("1_p2tlk")
+metadata/_custom_type_script = "uid://cks0mtwj4xan8"

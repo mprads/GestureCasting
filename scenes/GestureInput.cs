@@ -1,4 +1,5 @@
 using Game.Resources;
+using Game.Components;
 using Godot;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ public partial class GestureInput : Control {
     const string GESTURE_LIBRARY_PATH = "C:/Users/myles/Documents/GameDev/GestureCasting/resources/gesture_library";
 
     [Signal]
-    public delegate void GestureRecognizedEventHandler(string gestureName);
+    public delegate void GestureRecognizedEventHandler(Gesture gesture);
 
     [Export]
     private int lineWitdth = 5;
@@ -90,12 +91,11 @@ public partial class GestureInput : Control {
 
     private void RecognizeGesture() {
         Gesture candidate = new Gesture(points.ToArray());
-        string gestureClass = Recognizer.Classify(candidate);
+        (Gesture gesture, float distance) = Recognizer.Classify(candidate);
 
-        gestureLabel.Text = gestureClass;
+        gestureLabel.Text = $"{gesture.Name} {distance}";
 
-        // Need to handle when a match is below threshold
-        EmitSignal(SignalName.GestureRecognized, gestureClass);
+        EmitSignal(SignalName.GestureRecognized,gesture);
     }
 
     private void SaveGesture() {

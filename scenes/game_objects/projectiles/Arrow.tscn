@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://23prbrj28ncf"]
+
+[ext_resource type="PackedScene" uid="uid://c40d62btwmq5i" path="res://scenes/game_objects/projectiles/Projectile.tscn" id="1_l65le"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_3pvgt"]
+top_radius = 0.0
+bottom_radius = 0.2
+height = 3.0
+
+[node name="Missile" instance=ExtResource("1_l65le")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0.5504154)
+mesh = SubResource("CylinderMesh_3pvgt")

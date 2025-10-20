@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=5 format=3 uid="uid://cyw0sqtchoh11"]
+
+[ext_resource type="Script" uid="uid://dfqd65j68s1k1" path="res://resources/projectile_behaviour/AccelerateBehaviour.cs" id="1_j8e8p"]
+[ext_resource type="Script" uid="uid://ckmaspmduyyqe" path="res://resources/spells/Spell.cs" id="1_sbbgb"]
+[ext_resource type="PackedScene" uid="uid://23prbrj28ncf" path="res://scenes/game_objects/projectiles/Arrow.tscn" id="2_j8e8p"]
+
+[sub_resource type="Resource" id="Resource_j8e8p"]
+script = ExtResource("1_j8e8p")
+metadata/_custom_type_script = "uid://dfqd65j68s1k1"
+
+[resource]
+script = ExtResource("1_sbbgb")
+projectileScene = ExtResource("2_j8e8p")
+projectileBehaviour = SubResource("Resource_j8e8p")
+CastDelay = 1.0
+metadata/_custom_type_script = "uid://ckmaspmduyyqe"

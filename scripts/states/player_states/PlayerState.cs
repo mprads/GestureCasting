@@ -3,7 +3,7 @@ using Godot;
 namespace Game.States;
 
 [GlobalClass]
-public partial class PlayerState : Node {
+public partial class PlayerState : RefCounted {
 
     [Signal]
     public delegate void TransitionRequestedEventHandler(PlayerState from, PlayerStateMachine.STATE to);

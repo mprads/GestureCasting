@@ -1,5 +1,5 @@
+using Game.Entities;
 using Godot;
-using System;
 
 namespace Game.Camera;
 
@@ -10,6 +10,9 @@ public partial class CameraController : Node3D {
     public float MaxVerticalAngle =  Mathf.Pi / 2;
     [Export]
     public float MinVerticalAngle = -Mathf.Pi / 2;
+
+    [Export]
+    private Player owner;
 
     private Camera3D playerCamera;
     private bool cameraEnabled = true;

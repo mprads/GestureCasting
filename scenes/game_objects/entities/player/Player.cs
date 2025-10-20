@@ -1,5 +1,6 @@
 using System;
 using Game.Camera;
+using Game.Components;
 using Godot;
 
 namespace Game.Entities;
@@ -7,7 +8,7 @@ namespace Game.Entities;
 public partial class Player : CharacterBody3D {
     public float WalkSpeed = 8.0f;
     public float WalkAcceleration = 8.0f;
-    
+
     public float SprintSpeed = 12.0f;
     public float SprintAcceleration = 5.0f;
 
@@ -30,6 +31,7 @@ public partial class Player : CharacterBody3D {
     public Vector3 PreviousVelocity;
     public bool WasOnFloor;
 
+    public CastManager CastManager;
     public CameraController CameraController;
     public GestureInput GestureInput;
     public Timer CoyoteTimer;
@@ -37,12 +39,15 @@ public partial class Player : CharacterBody3D {
 
     private PlayerStateMachine playerStateMachine;
 
+    // DEBUG lables
     private Label stateLabel;
     private Label velocityLabel;
     private Label horizontalVelocityLabel;
+    private Label targetLabel;
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
+        CastManager = GetNode<CastManager>("%CastManager");
         GestureInput = GetNode<GestureInput>("%GestureInput");
         CoyoteTimer = GetNode<Timer>("%CoyoteTimer");
         JumpBufferTimer = GetNode<Timer>("%JumpBufferTimer");
@@ -50,13 +55,17 @@ public partial class Player : CharacterBody3D {
         stateLabel = GetNode<Label>("%StateLabel");
         velocityLabel = GetNode<Label>("%VelocityLabel");
         horizontalVelocityLabel = GetNode<Label>("%HorizontalVelocityLabel");
+        targetLabel = GetNode<Label>("%TargetLabel");
+
         playerStateMachine.Init(this);
+        CastManager.Init(this);
     }
 
     public override void _Process(double delta) {
         stateLabel.Text = playerStateMachine.GetCurrentStateName();
         velocityLabel.Text = Velocity.ToString();
         horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
+        targetLabel.Text = GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget() != null ? "Has Target" : "No Target";
     }
 
     public override void _PhysicsProcess(double delta) {
@@ -65,4 +74,7 @@ public partial class Player : CharacterBody3D {
         WasOnFloor = IsOnFloor();
     }
 
+    public Transform3D GetSpellOriginTransform() {
+        return CameraController.GetNode<Camera3D>("%PlayerCamera").GlobalTransform;
+    }
 }
