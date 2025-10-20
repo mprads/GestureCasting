@@ -4,7 +4,7 @@ using Game.GameObjects.Projectile;
 namespace Game.Resources;
 
 [GlobalClass]
-public abstract partial class ProjectileBehaviour : Resource {
+public abstract partial class ProjectileBehaviour : RefCounted {
     public Node3D Owner;
 
     //TODO Having a resource just to hold unique movement logic seems like a waste
