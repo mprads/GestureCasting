@@ -13,12 +13,13 @@ public partial class MultiplayerManager : Control {
     private Button hostButton;
     private Button joinButton;
     private Button startButton;
+    private VBoxContainer playerContainer;
 
     public override void _Ready() {
         hostButton = GetNode<Button>("%HostButton");
         joinButton = GetNode<Button>("%JoinButton");
         startButton = GetNode<Button>("%StartButton");
-
+        playerContainer = GetNode<VBoxContainer>("%PlayerContainer");
 
         Multiplayer.PeerConnected += OnPeerConnected;
         Multiplayer.PeerDisconnected += OnPeerDisconnected;
@@ -29,8 +30,18 @@ public partial class MultiplayerManager : Control {
         startButton.Pressed += OnStartButtonPressed;
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void StartGame() {
+        Node3D level = GameLevel.Instantiate<Node3D>();
+        GetTree().Root.AddChild(level);
+        this.Hide();
+    }
+
     private void OnPeerConnected(long id) {
         GD.Print($"Player Connected: {id}");
+        Label playerLabel = new Label();
+        playerLabel.Text = $"PlayerName: {id}";
+        playerContainer.AddChild(playerLabel);
     }
 
     private void OnPeerDisconnected(long id) {
@@ -58,6 +69,11 @@ public partial class MultiplayerManager : Control {
         Multiplayer.MultiplayerPeer = peer;
 
         GD.Print($"Waiting For Players");
+        startButton.Disabled = false;
+        hostButton.Disabled = true;
+        Label playerLabel = new Label();
+        playerLabel.Text = $"PlayerName: {Multiplayer.GetUniqueId()}";
+        playerContainer.AddChild(playerLabel);
     }
 
     private void OnJoinButtonPressed() {
@@ -68,11 +84,11 @@ public partial class MultiplayerManager : Control {
         Multiplayer.MultiplayerPeer = peer;
 
         GD.Print($"Joined Server");
+        hostButton.Disabled = true;
+        joinButton.Disabled = true;
     }
 
     private void OnStartButtonPressed() {
-        Node3D level = GameLevel.Instantiate<Node3D>();
-        GetTree().Root.AddChild(level);
-        this.Hide();
+        Rpc(nameof(StartGame));
     }
 }
