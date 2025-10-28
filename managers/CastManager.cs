@@ -4,6 +4,8 @@ using Game.Resources.Spells;
 using Game.Entities;
 using System.Threading.Tasks;
 
+namespace Game.Managers;
+
 public partial class CastManager : Node {
 
     [Export]

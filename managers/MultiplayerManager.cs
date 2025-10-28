@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.Managers;
+
 public partial class MultiplayerManager : Control {
     [Export]
     public PackedScene GameLevel;
@@ -13,12 +15,14 @@ public partial class MultiplayerManager : Control {
     private Button hostButton;
     private Button joinButton;
     private Button startButton;
+    private LineEdit nameInput;
     private VBoxContainer playerContainer;
 
     public override void _Ready() {
         hostButton = GetNode<Button>("%HostButton");
         joinButton = GetNode<Button>("%JoinButton");
         startButton = GetNode<Button>("%StartButton");
+        nameInput = GetNode<LineEdit>("%NameInput");
         playerContainer = GetNode<VBoxContainer>("%PlayerContainer");
 
         Multiplayer.PeerConnected += OnPeerConnected;
@@ -37,6 +41,24 @@ public partial class MultiplayerManager : Control {
         this.Hide();
     }
 
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void SendPlayerInformation(string name, int id) {
+        PlayerInfo playerInfo = new PlayerInfo() {
+            Name = name,
+            Id = id
+        };
+
+        if (!GameManager.PlayerList.Contains(playerInfo)) {
+            GameManager.PlayerList.Add(playerInfo);
+        }
+
+        if (Multiplayer.IsServer()) {
+            foreach (var item in GameManager.PlayerList) {
+                Rpc(nameof(SendPlayerInformation), name, id);
+            }
+        }
+    }
+
     private void OnPeerConnected(long id) {
         GD.Print($"Player Connected: {id}");
         Label playerLabel = new Label();
@@ -50,8 +72,9 @@ public partial class MultiplayerManager : Control {
 
     private void OnConnectedToServer() {
         GD.Print($"Connected to Server");
+        RpcId(1, nameof(SendPlayerInformation), GetNode<LineEdit>("%NameInput").Text, Multiplayer.GetUniqueId());
     }
-    
+
     private void OnConnectionFailed() {
         GD.Print($"Connection Failed");
     }
@@ -68,11 +91,13 @@ public partial class MultiplayerManager : Control {
         peer.Host.Compress(ENetConnection.CompressionMode.RangeCoder);
         Multiplayer.MultiplayerPeer = peer;
 
+        SendPlayerInformation(GetNode<LineEdit>("%NameInput").Text, 1);
+
         GD.Print($"Waiting For Players");
         startButton.Disabled = false;
         hostButton.Disabled = true;
         Label playerLabel = new Label();
-        playerLabel.Text = $"PlayerName: {Multiplayer.GetUniqueId()}";
+        playerLabel.Text = $"{GetNode<LineEdit>("%NameInput").Text}: {Multiplayer.GetUniqueId()}";
         playerContainer.AddChild(playerLabel);
     }
 
