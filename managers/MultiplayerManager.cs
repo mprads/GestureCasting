@@ -36,10 +36,6 @@ public partial class MultiplayerManager : Control {
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void StartGame() {
-        foreach (PlayerInfo info in GameManager.PlayerList) {
-            GD.Print($"{info.Name} is playing");
-        }
-
         Node3D level = GameLevel.Instantiate<Node3D>();
         GetTree().Root.AddChild(level);
         this.Hide();
@@ -54,9 +50,15 @@ public partial class MultiplayerManager : Control {
 
         if (!GameManager.PlayerList.Contains(playerInfo)) {
             GameManager.PlayerList.Add(playerInfo);
-            Label playerLabel = new Label();
-            playerLabel.Text = $"{playerInfo.Name}: {id}";
-            playerContainer.AddChild(playerLabel);
+            foreach (var child in playerContainer.GetChildren()) {
+                child.QueueFree();
+            }
+
+            foreach (PlayerInfo info in GameManager.PlayerList) {
+                Label playerLabel = new Label();
+                playerLabel.Text = $"{info.Name}: {info.Id}";
+                playerContainer.AddChild(playerLabel);
+            }
         }
 
         if (Multiplayer.IsServer()) {
