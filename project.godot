@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 ObjectPool="*res://globals/ObjectPool.cs"
+GameManager="*res://globals/GameManager.cs"
 
 [dotnet]
 

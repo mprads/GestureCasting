@@ -36,12 +36,16 @@ public partial class MultiplayerManager : Control {
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void StartGame() {
+        foreach (PlayerInfo info in GameManager.PlayerList) {
+            GD.Print($"{info.Name} is playing");
+        }
+
         Node3D level = GameLevel.Instantiate<Node3D>();
         GetTree().Root.AddChild(level);
         this.Hide();
     }
 
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     private void SendPlayerInformation(string name, int id) {
         PlayerInfo playerInfo = new PlayerInfo() {
             Name = name,
@@ -50,6 +54,9 @@ public partial class MultiplayerManager : Control {
 
         if (!GameManager.PlayerList.Contains(playerInfo)) {
             GameManager.PlayerList.Add(playerInfo);
+            Label playerLabel = new Label();
+            playerLabel.Text = $"{playerInfo.Name}: {id}";
+            playerContainer.AddChild(playerLabel);
         }
 
         if (Multiplayer.IsServer()) {
@@ -61,9 +68,6 @@ public partial class MultiplayerManager : Control {
 
     private void OnPeerConnected(long id) {
         GD.Print($"Player Connected: {id}");
-        Label playerLabel = new Label();
-        playerLabel.Text = $"PlayerName: {id}";
-        playerContainer.AddChild(playerLabel);
     }
 
     private void OnPeerDisconnected(long id) {
@@ -93,12 +97,8 @@ public partial class MultiplayerManager : Control {
 
         SendPlayerInformation(GetNode<LineEdit>("%NameInput").Text, 1);
 
-        GD.Print($"Waiting For Players");
         startButton.Disabled = false;
         hostButton.Disabled = true;
-        Label playerLabel = new Label();
-        playerLabel.Text = $"{GetNode<LineEdit>("%NameInput").Text}: {Multiplayer.GetUniqueId()}";
-        playerContainer.AddChild(playerLabel);
     }
 
     private void OnJoinButtonPressed() {
