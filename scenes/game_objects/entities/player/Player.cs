@@ -7,6 +7,10 @@ using Godot;
 namespace Game.Entities;
 
 public partial class Player : CharacterBody3D {
+    static readonly PackedScene PLAYER_SCENE = ResourceLoader.Load<PackedScene>("uid://d0gb5yk3bkywt");
+
+    public PlayerInfo Info;
+
     public float WalkSpeed = 8.0f;
     public float WalkAcceleration = 8.0f;
 
@@ -77,5 +81,12 @@ public partial class Player : CharacterBody3D {
 
     public Transform3D GetSpellOriginTransform() {
         return CameraController.GetNode<Camera3D>("%PlayerCamera").GlobalTransform;
+    }
+
+    public static Player CreateNew(PlayerInfo info) {
+        Player newPlayer = PLAYER_SCENE.Instantiate<Player>();
+        newPlayer.Info = info;
+
+        return newPlayer;
     }
 }
