@@ -63,7 +63,7 @@ public partial class MultiplayerManager : Control {
 
         if (Multiplayer.IsServer()) {
             foreach (var item in GameManager.PlayerList) {
-                Rpc(nameof(SendPlayerInformation), name, id);
+                Rpc(nameof(SendPlayerInformation), item.Name, item.Id);
             }
         }
     }

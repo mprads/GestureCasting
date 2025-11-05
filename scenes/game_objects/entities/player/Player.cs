@@ -62,6 +62,8 @@ public partial class Player : CharacterBody3D {
         horizontalVelocityLabel = GetNode<Label>("%HorizontalVelocityLabel");
         targetLabel = GetNode<Label>("%TargetLabel");
 
+        GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(Info.Id);
+
         playerStateMachine.Init(this);
         CastManager.Init(this);
     }
