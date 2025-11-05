@@ -24,18 +24,20 @@ public partial class CameraController : Node3D {
     }
 
     public override void _Input(InputEvent @event) {
-        if (@event is InputEventMouseMotion mouseMotion) {
-            if (cameraEnabled) {
-                RotateY(-mouseMotion.Relative.X * MouseSensitivity);
-                playerCamera.RotateX(-mouseMotion.Relative.Y * MouseSensitivity);
-                playerCamera.Rotation = new Vector3(
-                    Mathf.Clamp(
-                        playerCamera.Rotation.X,
-                        MinVerticalAngle,
-                        MaxVerticalAngle
-                    ),
-                    playerCamera.Rotation.Y,
-                    playerCamera.Rotation.Z);
+        if (owner.CheckMultiplayerAuthority()) {
+            if (@event is InputEventMouseMotion mouseMotion) {
+                if (cameraEnabled) {
+                    RotateY(-mouseMotion.Relative.X * MouseSensitivity);
+                    playerCamera.RotateX(-mouseMotion.Relative.Y * MouseSensitivity);
+                    playerCamera.Rotation = new Vector3(
+                        Mathf.Clamp(
+                            playerCamera.Rotation.X,
+                            MinVerticalAngle,
+                            MaxVerticalAngle
+                        ),
+                        playerCamera.Rotation.Y,
+                        playerCamera.Rotation.Z);
+                }
             }
         }
     }

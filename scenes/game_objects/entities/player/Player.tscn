@@ -106,4 +106,6 @@ unique_name_in_owner = true
 gestureLibray = Array[ExtResource("9_180ig")]([ExtResource("12_180ig"), ExtResource("11_20koh"), ExtResource("10_180ig")])
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.1
+delta_interval = 0.1
 replication_config = SubResource("SceneReplicationConfig_gtwq2")

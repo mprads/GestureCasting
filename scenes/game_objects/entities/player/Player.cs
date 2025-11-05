@@ -38,6 +38,7 @@ public partial class Player : CharacterBody3D {
 
     public CastManager CastManager;
     public CameraController CameraController;
+    public Camera3D PlayerCamera;
     public GestureInput GestureInput;
     public Timer CoyoteTimer;
     public Timer JumpBufferTimer;
@@ -52,6 +53,7 @@ public partial class Player : CharacterBody3D {
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
+        PlayerCamera = GetNode<Camera3D>("%PlayerCamera");
         CastManager = GetNode<CastManager>("%CastManager");
         GestureInput = GetNode<GestureInput>("%GestureInput");
         CoyoteTimer = GetNode<Timer>("%CoyoteTimer");
@@ -66,23 +68,35 @@ public partial class Player : CharacterBody3D {
 
         playerStateMachine.Init(this);
         CastManager.Init(this);
+
+        if (CheckMultiplayerAuthority()) {
+            PlayerCamera.Current = true;
+        }
     }
 
     public override void _Process(double delta) {
-        stateLabel.Text = playerStateMachine.GetCurrentStateName();
-        velocityLabel.Text = Velocity.ToString();
-        horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
-        targetLabel.Text = GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget() != null ? "Has Target" : "No Target";
+         if (CheckMultiplayerAuthority()) {
+            stateLabel.Text = playerStateMachine.GetCurrentStateName();
+            velocityLabel.Text = Velocity.ToString();
+            horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
+            targetLabel.Text = GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget() != null ? "Has Target" : "No Target";
+        }
     }
 
     public override void _PhysicsProcess(double delta) {
-        PreviousPosition = Position;
-        PreviousVelocity = Velocity;
-        WasOnFloor = IsOnFloor();
+        if (CheckMultiplayerAuthority()) {
+            PreviousPosition = Position;
+            PreviousVelocity = Velocity;
+            WasOnFloor = IsOnFloor();
+        }
     }
 
     public Transform3D GetSpellOriginTransform() {
         return CameraController.GetNode<Camera3D>("%PlayerCamera").GlobalTransform;
+    }
+
+    public bool CheckMultiplayerAuthority() {
+        return GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == Multiplayer.GetUniqueId();
     }
 
     public static Player CreateNew(PlayerInfo info) {

@@ -15,7 +15,7 @@ public partial class PlayerState : RefCounted {
     public virtual void Exit() { }
 
     public virtual void PhysicsProcess(double delta) {
-        if (player.GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").GetMultiplayerAuthority() == player.Multiplayer.GetUniqueId()) {
+        if (player.CheckMultiplayerAuthority()) {
             ApplyGravity(delta);
             CheckFloor();
             Move(delta);
