@@ -45,6 +45,10 @@ public partial class Player : CharacterBody3D {
 
     private PlayerStateMachine playerStateMachine;
 
+    // Multiplayer Sync
+    private Vector3 multiplayerSyncPos = Vector3.Zero;
+    private Vector3 multiplayerSyncRotation = Vector3.Zero;
+
     // DEBUG lables
     private Label stateLabel;
     private Label velocityLabel;
@@ -88,6 +92,12 @@ public partial class Player : CharacterBody3D {
             PreviousPosition = Position;
             PreviousVelocity = Velocity;
             WasOnFloor = IsOnFloor();
+
+            multiplayerSyncPos = GlobalPosition;
+            multiplayerSyncRotation = Rotation;
+        } else {
+            GlobalPosition = GlobalPosition.Lerp(multiplayerSyncPos, .1f);
+            Rotation = Rotation.Lerp(multiplayerSyncRotation, .1f);
         }
     }
 
