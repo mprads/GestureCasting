@@ -44,7 +44,9 @@ public partial class PlayerStateCasting : PlayerState {
     }
 
     private void OnGestureRecognized(Gesture gesture) {
-        player.CastManager.Cast(gesture.Spell);
-        EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
+        if (player.CheckMultiplayerAuthority()) {
+            player.CastManager.Cast(gesture.Spell);
+            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
+        }
     }
 }

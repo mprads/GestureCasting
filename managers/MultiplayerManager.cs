@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 
 namespace Game.Managers;
@@ -73,6 +74,10 @@ public partial class MultiplayerManager : Control {
     }
 
     private void OnPeerDisconnected(long id) {
+        PlayerInfo disconnectedInfo = GameManager.PlayerList.Where(player => player.Id == id).First<PlayerInfo>();
+        GameManager.PlayerList.Remove(disconnectedInfo);
+
+        // TODO add player group, iterate over and queuefree
         GD.Print($"Player Disonnected: {id}");
     }
 
