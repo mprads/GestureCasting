@@ -4,7 +4,6 @@ using Godot;
 
 public partial class SceneManager : Node {
  
-
     public override void _Ready() {
         int index = 0;
         foreach (PlayerInfo info in GameManager.PlayerList) {
@@ -18,7 +17,7 @@ public partial class SceneManager : Node {
                     newPlayer.GlobalPosition = spawnPoint.GlobalPosition;
                 }
             }
-            
+
             index++;
         }
     }
