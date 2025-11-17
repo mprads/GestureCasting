@@ -104,7 +104,6 @@ public partial class Projectile : RayCast3D, IPoolable {
             castedProjectile.Target = caster.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
         } else {
             castedProjectile.Target = null;
-
         }
     }
 }

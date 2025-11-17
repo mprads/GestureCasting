@@ -38,8 +38,8 @@ public partial class Player : CharacterBody3D {
 
     public CastManager CastManager;
     public CameraController CameraController;
-    public Camera3D PlayerCamera;
     public GestureInput GestureInput;
+    public Camera3D PlayerCamera;
     public Timer CoyoteTimer;
     public Timer JumpBufferTimer;
 
@@ -54,6 +54,8 @@ public partial class Player : CharacterBody3D {
     private Label velocityLabel;
     private Label horizontalVelocityLabel;
     private Label targetLabel;
+    private CanvasLayer debugLayer;
+    private CanvasLayer gestureLayer;
 
     public override void _Ready() {
         CameraController = GetNode<CameraController>("%CameraController");
@@ -67,6 +69,8 @@ public partial class Player : CharacterBody3D {
         velocityLabel = GetNode<Label>("%VelocityLabel");
         horizontalVelocityLabel = GetNode<Label>("%HorizontalVelocityLabel");
         targetLabel = GetNode<Label>("%TargetLabel");
+        debugLayer = GetNode<CanvasLayer>("%DebugLayer");
+        gestureLayer = GetNode<CanvasLayer>("%GestureLayer");
 
         GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(Info.Id);
 
@@ -75,6 +79,8 @@ public partial class Player : CharacterBody3D {
 
         if (CheckMultiplayerAuthority()) {
             PlayerCamera.Current = true;
+            debugLayer.Visible = true;
+            gestureLayer.Visible = true;
         }
     }
 

@@ -5,12 +5,14 @@ namespace Game.States;
 public partial class PlayerStateIdle : PlayerState {
 
     public override void UnhandledInput(InputEvent @event) {
-        if (@event.IsActionPressed("jump")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
-        } else if (@event.IsActionPressed("crouch")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.CROUCH);
-        } else if (@event.IsActionPressed("toggle_mouse_mode")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.CASTING);
+        if (player.CheckMultiplayerAuthority()) {
+            if (@event.IsActionPressed("jump")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
+            } else if (@event.IsActionPressed("crouch")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.CROUCH);
+            } else if (@event.IsActionPressed("toggle_mouse_mode")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.CASTING);
+            }
         }
     }
 

@@ -20,11 +20,14 @@ public partial class PlayerStateCasting : PlayerState {
         player.GestureInput.GestureRecognized -= OnGestureRecognized;
         player.CameraController.EnableCamera();
         player.GestureInput.DisableInput();
+
     }
 
     public override void UnhandledInput(InputEvent @event) {
-        if (@event.IsActionPressed("toggle_mouse_mode")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
+        if (player.CheckMultiplayerAuthority()) {
+            if (@event.IsActionPressed("toggle_mouse_mode")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
+            }
         }
     }
 
@@ -45,7 +48,7 @@ public partial class PlayerStateCasting : PlayerState {
 
     private void OnGestureRecognized(Gesture gesture) {
         if (player.CheckMultiplayerAuthority()) {
-            player.CastManager.Cast(gesture.Spell);
+            player.CastManager.CheckSpell(gesture.Spell);
             EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.IDLE);
         }
     }
