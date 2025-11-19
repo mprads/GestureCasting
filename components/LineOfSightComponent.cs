@@ -7,10 +7,14 @@ namespace Game.Components;
 public partial class LineOfSightComponent : Area3D {
     [Export]
     public Godot.Collections.Array<Node3D> Overlaps = new();
-    public Player Owner;
+    public Player Player {
+        get { return Player; }
+        set { lineOfSightRayCast.AddException(value); }
+    }
 
     private RayCast3D lineOfSightRayCast;
     private Timer lineOfSightTimer;
+    [Export]
     private GodotObject target;
 
     public override void _Ready() {
@@ -18,7 +22,6 @@ public partial class LineOfSightComponent : Area3D {
         lineOfSightTimer = GetNode<Timer>("%LineOfSightTimer");
 
         lineOfSightTimer.Timeout += OnLineOfSightTimerTimeout;
-        lineOfSightRayCast.AddException(Owner);
     }
 
     public Node3D GetTarget() {
@@ -30,10 +33,12 @@ public partial class LineOfSightComponent : Area3D {
     private void OnLineOfSightTimerTimeout() {
         Godot.Collections.Array<Node3D> overlaps = GetOverlappingBodies();
         if (overlaps.Any()) {
+            // GD.Print($"{overlaps.Count}");
             Overlaps = overlaps;
             foreach (Node3D overlap in overlaps) {
                 if (overlap is Player) {
                     Vector3 targetPosition = overlap.GlobalTransform.Origin;
+                    // GD.Print($"{targetPosition}");
                     lineOfSightRayCast.LookAt(targetPosition, Vector3.Up);
                     lineOfSightRayCast.ForceRaycastUpdate();
 

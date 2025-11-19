@@ -84,7 +84,7 @@ public partial class Player : CharacterBody3D {
         playerStateMachine.Init(this);
         CastManager.Init(this);
 
-        LineOfSightComponent.Owner = this;
+        LineOfSightComponent.Player = this;
     }
 
     public override void _Process(double delta) {
