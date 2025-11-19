@@ -1,14 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cj5jlq8x2pe00"]
+[gd_scene load_steps=3 format=3 uid="uid://cj5jlq8x2pe00"]
 
 [ext_resource type="PackedScene" uid="uid://oj3blpxqf1bl" path="res://scenes/TestMap.tscn" id="2_sugp2"]
 [ext_resource type="PackedScene" uid="uid://dpp2rq7axak8t" path="res://managers/SceneManager.tscn" id="3_0bbpv"]
-[ext_resource type="PackedScene" uid="uid://cmsar5lv276up" path="res://scenes/testing_box.tscn" id="3_rarhs"]
 
 [node name="Main" type="Node3D"]
 
 [node name="TestMap" parent="." instance=ExtResource("2_sugp2")]
-
-[node name="TestingBox" parent="." instance=ExtResource("3_rarhs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.9906645, 4.3700466, 3.1496649)
 
 [node name="SceneManager" parent="." instance=ExtResource("3_0bbpv")]

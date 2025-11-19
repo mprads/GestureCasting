@@ -42,6 +42,7 @@ public partial class Player : CharacterBody3D {
     public Camera3D PlayerCamera;
     public Timer CoyoteTimer;
     public Timer JumpBufferTimer;
+    public LineOfSightComponent LineOfSightComponent;
 
     private PlayerStateMachine playerStateMachine;
 
@@ -57,11 +58,11 @@ public partial class Player : CharacterBody3D {
     private CanvasLayer debugLayer;
     private CanvasLayer gestureLayer;
 
-    public override void _Ready() {
-        CameraController = GetNode<CameraController>("%CameraController");
+    public override void _Ready() {CameraController = GetNode<CameraController>("%CameraController");
         PlayerCamera = GetNode<Camera3D>("%PlayerCamera");
         CastManager = GetNode<CastManager>("%CastManager");
         GestureInput = GetNode<GestureInput>("%GestureInput");
+        LineOfSightComponent = GetNode<LineOfSightComponent>("%LineOfSightComponent");
         CoyoteTimer = GetNode<Timer>("%CoyoteTimer");
         JumpBufferTimer = GetNode<Timer>("%JumpBufferTimer");
         playerStateMachine = GetNode<PlayerStateMachine>("%StateMachine");
@@ -74,14 +75,16 @@ public partial class Player : CharacterBody3D {
 
         GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(Info.Id);
 
-        playerStateMachine.Init(this);
-        CastManager.Init(this);
-
         if (CheckMultiplayerAuthority()) {
             PlayerCamera.Current = true;
             debugLayer.Visible = true;
             gestureLayer.Visible = true;
         }
+
+        playerStateMachine.Init(this);
+        CastManager.Init(this);
+
+        LineOfSightComponent.Owner = this;
     }
 
     public override void _Process(double delta) {
@@ -89,7 +92,7 @@ public partial class Player : CharacterBody3D {
             stateLabel.Text = playerStateMachine.GetCurrentStateName();
             velocityLabel.Text = Velocity.ToString();
             horizontalVelocityLabel.Text = $"{MathF.Abs(Velocity.X) + MathF.Abs(Velocity.Z)}";
-            targetLabel.Text = GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget() != null ? "Has Target" : "No Target";
+            targetLabel.Text = LineOfSightComponent.GetTarget() != null ? "Has Target" : "No Target";
         }
     }
 
