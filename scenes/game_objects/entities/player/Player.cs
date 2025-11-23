@@ -46,7 +46,6 @@ public partial class Player : CharacterBody3D {
 
     private PlayerStateMachine playerStateMachine;
 
-    // Multiplayer Sync
     private Vector3 multiplayerSyncPos = Vector3.Zero;
     private Vector3 multiplayerSyncRotation = Vector3.Zero;
 

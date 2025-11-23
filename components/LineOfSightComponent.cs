@@ -33,12 +33,10 @@ public partial class LineOfSightComponent : Area3D {
     private void OnLineOfSightTimerTimeout() {
         Godot.Collections.Array<Node3D> overlaps = GetOverlappingBodies();
         if (overlaps.Any()) {
-            // GD.Print($"{overlaps.Count}");
             Overlaps = overlaps;
             foreach (Node3D overlap in overlaps) {
                 if (overlap is Player) {
                     Vector3 targetPosition = overlap.GlobalTransform.Origin;
-                    // GD.Print($"{targetPosition}");
                     lineOfSightRayCast.LookAt(targetPosition, Vector3.Up);
                     lineOfSightRayCast.ForceRaycastUpdate();
 

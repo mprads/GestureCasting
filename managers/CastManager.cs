@@ -28,7 +28,7 @@ public partial class CastManager : Node {
         }
     }
 
-     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void Cast(String spellResourceId) {
         Spell spell = ResourceLoader.Load<Spell>(spellResourceId);
         spell.Cast(owner);
