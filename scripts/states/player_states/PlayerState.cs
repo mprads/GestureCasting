@@ -15,9 +15,11 @@ public partial class PlayerState : RefCounted {
     public virtual void Exit() { }
 
     public virtual void PhysicsProcess(double delta) {
-        ApplyGravity(delta);
-        CheckFloor();
-        Move(delta);
+        if (player.CheckMultiplayerAuthority()) {
+            ApplyGravity(delta);
+            CheckFloor();
+            Move(delta);
+        }
     }
 
     public virtual void UnhandledInput(InputEvent @event) { }

@@ -18,11 +18,13 @@ public partial class PlayerStateInAir : PlayerState {
 
 
     public override void UnhandledInput(InputEvent @event) {
-        if (@event.IsActionPressed("jump")) {
-            if (player.CoyoteTimer.TimeLeft > 0.0f) {
-                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
-            } else {
-                player.JumpBufferTimer.Start();
+        if (player.CheckMultiplayerAuthority()) {
+            if (@event.IsActionPressed("jump")) {
+                if (player.CoyoteTimer.TimeLeft > 0.0f) {
+                    EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
+                } else {
+                    player.JumpBufferTimer.Start();
+                }
             }
         }
     }

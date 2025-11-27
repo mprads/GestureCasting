@@ -95,7 +95,7 @@ public partial class GestureInput : Control {
 
         gestureLabel.Text = $"{gesture.Name} {distance}";
 
-        EmitSignal(SignalName.GestureRecognized,gesture);
+        EmitSignal(SignalName.GestureRecognized, gesture);
     }
 
     private void SaveGesture() {

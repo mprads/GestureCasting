@@ -4,10 +4,12 @@ namespace Game.States;
 
 public partial class PlayerStateCrouch : PlayerState {
     public override void UnhandledInput(InputEvent @event) {
-        if (@event.IsActionPressed("jump")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
-        } else if (@event.IsActionReleased("crouch")) {
-            EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.WALK);
+        if (player.CheckMultiplayerAuthority()) {
+            if (@event.IsActionPressed("jump")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.JUMP);
+            } else if (@event.IsActionReleased("crouch")) {
+                EmitSignal(SignalName.TransitionRequested, this, (int)PlayerStateMachine.STATE.WALK);
+            }
         }
     }
 

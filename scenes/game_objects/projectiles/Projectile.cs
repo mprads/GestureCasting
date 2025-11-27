@@ -38,11 +38,16 @@ public partial class Projectile : RayCast3D, IPoolable {
             if (collider != owner) {
                 GlobalPosition = GetCollisionPoint();
                 SetPhysicsProcess(false);
+
                 if (collider is Node collisionNode) {
                     collisionNode.AddChild(remoteTransform);
                     remoteTransform.GlobalTransform = GlobalTransform;
                     remoteTransform.RemotePath = remoteTransform.GetPathTo(this);
-                }  
+                }
+
+                if (collider is Player player) {
+                    player.TakeDamage();
+                }
             }
         }
     }
@@ -104,7 +109,6 @@ public partial class Projectile : RayCast3D, IPoolable {
             castedProjectile.Target = caster.GetNode<LineOfSightComponent>("%LineOfSightComponent").GetTarget();
         } else {
             castedProjectile.Target = null;
-
         }
     }
 }

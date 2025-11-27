@@ -2,7 +2,9 @@ using Godot;
 using System.Collections.Generic;
 using Game.Resources.Spells;
 using Game.Entities;
-using System.Threading.Tasks;
+using System;
+
+namespace Game.Managers;
 
 public partial class CastManager : Node {
 
@@ -20,9 +22,15 @@ public partial class CastManager : Node {
         }
     }
 
-    public async Task Cast(Spell spell) {
+    public void CheckSpell(Spell spell) {
         if (availableSpells.Contains(spell)) {
-            await spell.Cast(owner);
+            Rpc(nameof(Cast), spell.ResourcePath);
         }
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void Cast(String spellResourceId) {
+        Spell spell = ResourceLoader.Load<Spell>(spellResourceId);
+        spell.Cast(owner);
     }
 }

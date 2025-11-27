@@ -147,3 +147,17 @@ radius = 4.4
 radial_segments = 32
 rings = 12
 material = ExtResource("1_higte")
+
+[node name="PlayerSpawnPoints" type="Node" parent="."]
+
+[node name="0" type="Node3D" parent="PlayerSpawnPoints" groups=["player_spawn_point"]]
+transform = Transform3D(0.9964194, 0.084547415, 0, -0.084547415, 0.9964194, 0, 0, 0, 1, 10.977014, 6.675659, 19.713478)
+
+[node name="1" type="Node3D" parent="PlayerSpawnPoints" groups=["player_spawn_point"]]
+transform = Transform3D(0.9964194, 0.084547415, 0, -0.084547415, 0.9964194, 0, 0, 0, 1, 10.977014, 7.2302523, 9.4769745)
+
+[node name="2" type="Node3D" parent="PlayerSpawnPoints" groups=["player_spawn_point"]]
+transform = Transform3D(0.9964194, 0.084547415, 0, -0.084547415, 0.9964194, 0, 0, 0, 1, 42.79506, 5.9261913, 20.70051)
+
+[node name="3" type="Node3D" parent="PlayerSpawnPoints" groups=["player_spawn_point"]]
+transform = Transform3D(0.9964194, 0.084547415, 0, -0.084547415, 0.9964194, 0, 0, 0, 1, 49.361904, 2.6148133, -35.870155)

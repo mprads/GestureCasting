@@ -5,8 +5,16 @@ using Godot;
 namespace Game.Components;
 
 public partial class LineOfSightComponent : Area3D {
+    [Export]
+    public Godot.Collections.Array<Node3D> Overlaps = new();
+    public Player Player {
+        get { return Player; }
+        set { lineOfSightRayCast.AddException(value); }
+    }
+
     private RayCast3D lineOfSightRayCast;
     private Timer lineOfSightTimer;
+    [Export]
     private GodotObject target;
 
     public override void _Ready() {
@@ -25,9 +33,9 @@ public partial class LineOfSightComponent : Area3D {
     private void OnLineOfSightTimerTimeout() {
         Godot.Collections.Array<Node3D> overlaps = GetOverlappingBodies();
         if (overlaps.Any()) {
+            Overlaps = overlaps;
             foreach (Node3D overlap in overlaps) {
-                // TODO dislike using groups change to player or entity class
-                if (overlap.IsInGroup("target_dummy")) {
+                if (overlap is Player) {
                     Vector3 targetPosition = overlap.GlobalTransform.Origin;
                     lineOfSightRayCast.LookAt(targetPosition, Vector3.Up);
                     lineOfSightRayCast.ForceRaycastUpdate();
@@ -35,12 +43,9 @@ public partial class LineOfSightComponent : Area3D {
                     if (lineOfSightRayCast.IsColliding()) {
                         GodotObject collider = lineOfSightRayCast.GetCollider();
 
-                        // TODO add ownership, only for target dummy testing
-                        if (collider is not Player) {
-                            if (collider == overlap) {
-                                target = collider;
-                                return;
-                            }
+                        if (collider == overlap) {
+                            target = collider;
+                            return;
                         }
                     }
                 }
