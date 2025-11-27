@@ -109,6 +109,10 @@ public partial class Player : CharacterBody3D {
         }
     }
 
+    public void TakeDamage() {
+        GD.Print("OW");
+    }
+
     public Transform3D GetSpellOriginTransform() {
         return CameraController.GetNode<Camera3D>("%PlayerCamera").GlobalTransform;
     }
