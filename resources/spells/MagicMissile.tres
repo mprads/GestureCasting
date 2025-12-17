@@ -9,4 +9,5 @@ script = ExtResource("1_ho6c8")
 projectileScene = ExtResource("1_140iu")
 projectileBehaviour = ExtResource("1_o7se0")
 ProjectileCount = 5
+Damage = 5
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"

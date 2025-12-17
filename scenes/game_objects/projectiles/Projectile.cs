@@ -21,6 +21,8 @@ public partial class Projectile : RayCast3D, IPoolable {
     private Node3D owner;
     private PackedScene scene;
     private RemoteTransform3D remoteTransform;
+
+    private int damage;
     
 
     public override void _Process(double delta) {
@@ -46,7 +48,7 @@ public partial class Projectile : RayCast3D, IPoolable {
                 }
 
                 if (collider is Player player) {
-                    player.TakeDamage();
+                    player.TakeDamage(damage, owner);
                 }
             }
         }
@@ -88,7 +90,7 @@ public partial class Projectile : RayCast3D, IPoolable {
         ObjectPool.Instance.ReturnInstance(this, scene);
     }
 
-    public static void CreateNew(Node3D caster, PackedScene projectileScene, ProjectileBehaviour projectileBehaviour) {
+    public static void CreateNew(Node3D caster, PackedScene projectileScene, ProjectileBehaviour projectileBehaviour, int spellDamage) {
         (Node newProjectile, bool fromPool) = ObjectPool.Instance.RequestInstantiate(projectileScene);
         Projectile castedProjectile = (Projectile)newProjectile;
 
@@ -98,6 +100,7 @@ public partial class Projectile : RayCast3D, IPoolable {
 
         castedProjectile.behaviour = projectileBehaviour;
         castedProjectile.owner = caster;
+        castedProjectile.damage = spellDamage;
 
         if (caster is Player player) {
             castedProjectile.GlobalTransform = player.GetSpellOriginTransform();

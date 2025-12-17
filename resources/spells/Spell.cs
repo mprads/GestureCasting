@@ -21,6 +21,8 @@ public partial class Spell : Resource {
     public float InitialSpeed = 50.0f;
     [Export]
     public float MaxSpeed = 100.0f;
+    [Export]
+    public int Damage = 0;
 
     public Node Owner;
 
@@ -30,7 +32,7 @@ public partial class Spell : Resource {
 
         for (int i = 0; i < ProjectileCount; i++) {
             await ToSignal(caster.GetTree().CreateTimer(CastDelay), "timeout");
-            Projectile.CreateNew(caster, projectileScene, projectileBehaviour);
+            Projectile.CreateNew(caster, projectileScene, projectileBehaviour, Damage);
         }
     }
 }
