@@ -1,4 +1,5 @@
 using System.Linq;
+using Game.Entities;
 using Godot;
 
 namespace Game.Managers;
@@ -40,6 +41,27 @@ public partial class MultiplayerManager : Control {
         Node3D level = GameLevel.Instantiate<Node3D>();
         GetTree().Root.AddChild(level);
         this.Hide();
+
+        Rpc(nameof(SpawnPlayers));
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void SpawnPlayers() {
+        int index = 0;
+        foreach (PlayerInfo info in GameManager.PlayerList) {
+            Player newPlayer = Player.CreateNew(info);
+            AddChild(newPlayer);
+
+            // TODO still not a fan of groups, but need the scene manage to have access
+            // to the level scene to get access to the spawnpoint nodes
+            foreach (Node3D spawnPoint in GetTree().GetNodesInGroup("player_spawn_point")) {
+                if (int.Parse(spawnPoint.Name) == index) {
+                    newPlayer.GlobalPosition = spawnPoint.GlobalPosition;
+                }
+            }
+
+            index++;
+        }
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer)]

@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using Game.Autoloads;
 using Game.Camera;
 using Game.Components;
 using Game.Managers;
@@ -118,11 +118,7 @@ public partial class Player : CharacterBody3D {
             GD.Print($"ow {damage}");
 
             if (health <= 0) {
-                if (damageSource is Player playerDamageSoruce) {
-                     GD.Print($"killed by {playerDamageSoruce.Info.Name}");     
-                } else {
-                    GD.Print($"{Info.Name} killed");
-                }  
+                Events.EmitPlayerDied(this, damageSource);
             }
         }
     }
