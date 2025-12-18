@@ -1,5 +1,5 @@
 using System;
-using Game.Autoloads;
+using Game.Autoload;
 using Game.Camera;
 using Game.Components;
 using Game.Managers;

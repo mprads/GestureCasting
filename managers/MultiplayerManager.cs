@@ -45,7 +45,7 @@ public partial class MultiplayerManager : Control {
         Rpc(nameof(SpawnPlayers));
     }
 
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer)]
     private void SpawnPlayers() {
         int index = 0;
         foreach (PlayerInfo info in GameManager.PlayerList) {
