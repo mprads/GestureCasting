@@ -9,4 +9,5 @@ script = ExtResource("1_0xp33")
 projectileScene = ExtResource("1_r5vj4")
 projectileBehaviour = ExtResource("1_1gbqy")
 CastDelay = 0.2
+Damage = 30
 metadata/_custom_type_script = "uid://ckmaspmduyyqe"

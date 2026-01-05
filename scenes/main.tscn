@@ -1,10 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cj5jlq8x2pe00"]
+[gd_scene load_steps=3 format=3 uid="uid://b1fnqhyafnj2s"]
 
+[ext_resource type="Script" uid="uid://dje0ksygd3jk0" path="res://managers/GameManager.cs" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://oj3blpxqf1bl" path="res://scenes/TestMap.tscn" id="2_sugp2"]
-[ext_resource type="PackedScene" uid="uid://dpp2rq7axak8t" path="res://managers/SceneManager.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node3D"]
 
 [node name="TestMap" parent="." instance=ExtResource("2_sugp2")]
 
-[node name="SceneManager" parent="." instance=ExtResource("3_0bbpv")]
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_rvslj")

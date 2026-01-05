@@ -1,4 +1,5 @@
 using System;
+using Game.Autoload;
 using Game.Camera;
 using Game.Components;
 using Game.Managers;
@@ -48,6 +49,8 @@ public partial class Player : CharacterBody3D {
 
     private Vector3 multiplayerSyncPos = Vector3.Zero;
     private Vector3 multiplayerSyncRotation = Vector3.Zero;
+
+    private int health = 50;
 
     // DEBUG lables
     private Label stateLabel;
@@ -109,8 +112,15 @@ public partial class Player : CharacterBody3D {
         }
     }
 
-    public void TakeDamage() {
-        GD.Print("OW");
+    public void TakeDamage(int damage, Node3D damageSource) {
+        if (CheckMultiplayerAuthority()) {
+            health -= damage;
+            GD.Print($"ow {damage}");
+
+            if (health <= 0) {
+                Events.EmitPlayerDied(this, damageSource);
+            }
+        }
     }
 
     public Transform3D GetSpellOriginTransform() {
